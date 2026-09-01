@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting data in and out — Manifest guide</title>
+<meta name="description" content="Spreadsheet import, exports, distributing to a fleet, the catalogue server and updates.">
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Manifest</span>
+      <span class="brand-sub">guide</span>
+    </a>
+    <div class="tools">
+      <label class="search" for="q">
+        <span class="vh">Search the guide</span>
+        <input id="q" type="search" placeholder="Search the guide" autocomplete="off"
+               spellcheck="false" aria-controls="results" aria-expanded="false">
+      </label>
+      <a class="dl" href="manifest-guide.html" download>Download</a>
+    </div>
+  </div>
+  <div id="results" class="results" role="region" aria-live="polite" hidden></div>
+</header>
+
+<div class="wrap shell">
+  <nav class="sidebar" aria-label="Guide"><ul class='nav-list'><li><a href="index.html">Overview</a></li><li><a href="start.html">Getting started</a></li><li><a href="catalogue.html">Your catalogue</a></li><li><a href="working.html">On the floor</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="labels.html">Labels</a></li><li><a href="data.html" aria-current="page">Getting data in and out</a></li><li><a href="safety.html">Fleet, backup and privacy</a></li><li><a href="pricing.html">Price and scope</a></li><li><a href="questions.html">Questions</a></li><li><a href="reference.html">Reference</a></li></ul></nav>
+  <main id="main" class="content"><div class='page-head'><p class='eyebrow'>Getting data in and out</p><h1>Getting data in and out</h1><p class='lede'>Spreadsheet import, exports, distributing to a fleet, the catalogue server and updates.</p></div>
+<nav class='toc' aria-label='On this page'><p class='toc-h'>On this page</p><ul><li><a href="#spreadsheet">Importing a spreadsheet</a></li><li><a href="#exports">Exporting your catalogue</a></li><li><a href="#server">The catalogue server</a></li><li><a href="#updates">Catalogue updates</a></li></ul></nav>
+<section id='spreadsheet' class='sec'><h2><a class='anchor' href='#spreadsheet'>Importing a spreadsheet</a></h2>
+<p>Almost every business already has its parts in a spreadsheet. Studio imports
+<strong>CSV and Excel</strong> files with a column mapping step: it reads your
+headings, works out what each column is and what type it holds, and lets you
+correct it.</p>
+
+<p>It handles the things that usually break an import — a heading row that is
+not the first row, mixed date formats, currency symbols, decimal commas — and it
+tells you exactly what it is about to do before it does it:</p>
+
+<div class="note"><p><code>5 to add, 0 to update, 0 rows skipped, 0 cells left
+empty</code> — and then, plainly, <code>5 added, 0 changed, 40 removed</code>.
+You see the removals before you agree to them.</p></div>
+
+<p>You can <strong>replace</strong> a catalogue outright, or <strong>merge</strong>
+a newer price list into the one you already have without doubling anything
+up.</p>
+</section>
+<section id='exports' class='sec'><h2><a class='anchor' href='#exports'>Exporting your catalogue</a></h2>
+<div class="scroll"><table>
+<thead><tr><th scope="col">Route</th><th scope="col">What it means</th></tr></thead>
+<tbody>
+<tr><th scope="row">Plain export</th><td>An ordinary readable file. Your data,
+yours to keep, openable by anything. Any stored credentials are stripped out of
+it</td></tr>
+<tr><th scope="row">Sealed export</th><td>Encrypted to the specific handsets you
+name. Only those devices can open it</td></tr>
+<tr><th scope="row">Bundle</th><td>The catalogue together with its photographs
+and drawings, in one archive</td></tr>
+<tr><th scope="row">Catalogue server</th><td>Handsets fetch updates themselves
+over your own network</td></tr>
+</tbody></table></div>
+
+<p>Exports are named after the catalogue and the date, so a folder of them can
+be read at a glance.</p>
+
+<div class="note"><p><strong>There is no lock-in.</strong> The plain export is a
+readable document you can keep, archive or move elsewhere. That is deliberate: a
+format only our software can read would be lock-in wearing a security
+badge.</p></div>
+</section>
+<section id='server' class='sec'><h2><a class='anchor' href='#server'>The catalogue server</a></h2>
+<p>An optional extra for larger fleets. Studio exports a small, ready-to-run
+program for <strong>Windows, Linux or a Raspberry Pi</strong>, together with its
+configuration and its key.</p>
+
+<p>Put it on a machine in your building, and every handset picks up catalogue
+updates over your own network — no web host, no hosting bill, nothing exposed to
+the internet.</p>
+
+<h3>What it does and refuses</h3>
+<ul>
+<li>The connection is <strong>pinned</strong>: handsets accept that one machine
+and no other, so nothing on the network can impersonate it.</li>
+<li>It <strong>refuses any request</strong> that does not carry the shared secret
+it was issued with.</li>
+<li>It will not serve its own key, will not list a directory, and serves nothing
+except the catalogue.</li>
+<li>It mints its own certificate on first run. There is nothing to configure and
+no certificate to buy.</li>
+</ul>
+
+<p>Once bought, <em>Export catalogue server</em> appears in Studio under
+Settings ▸ Catalogue. Before it is bought the row is absent rather than greyed
+out, because a permanently dead control is an advertisement wearing a control's
+clothes.</p>
+</section>
+<section id='updates' class='sec'><h2><a class='anchor' href='#updates'>Catalogue updates</a></h2>
+<p>A catalogue can name an address it updates from — your catalogue server, or
+any https address you control. Handsets check on their own, at an interval you
+set, no more often than every fifteen minutes.</p>
+
+<div class="note"><p><strong>An update is offered, never applied behind
+somebody's back.</strong> A fetched catalogue goes through the same preview,
+signature check and confirmation as a file handed over by hand — mid-shift, on
+somebody's phone, is not the moment to change what the app says.</p></div>
+
+<p>A source offering an older catalogue than the handset already holds is
+refused, and the message says who has to act.</p>
+</section></main>
+</div>
+
+<footer class="wrap site-foot">
+  <p><strong>Manifest</strong> and <strong>Manifest Studio</strong> are
+  published by Lucas Potter (LPSD). Guide updated 1 September 2026.</p>
+  <p><a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">Privacy policy</a> · <a href="manifest-guide.html" download>Download this guide</a></p>
+</footer>
+
+<script src="assets/search-index.js"></script>
+<script src="assets/guide.js"></script>
+</body>
+</html>

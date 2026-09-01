@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manifest — the complete guide</title>
+<meta name="description" content="The complete Manifest guide, in one file.">
+<style>
+/* Manifest guide — a spec sheet, not a brochure.
+   Monospace carries identifiers and labels because that is what the app does
+   with part numbers; the accent is the app's own oxblood. */
+
+:root {
+  color-scheme: light dark;
+
+  --paper:   #f7f6f4;
+  --raised:  #ffffff;
+  --ink:     #15171a;
+  --muted:   #6b6862;
+  --rule:    #dcd8d2;
+  --hair:    #e8e5e0;
+  --accent:  #9a2118;
+  --accent-soft: rgba(154, 33, 24, .08);
+  --warn:    #8a5a00;
+  --warn-soft: rgba(138, 90, 0, .09);
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  --measure: 40rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:  #14161a;
+    --raised: #1b1e23;
+    --ink:    #e8e6e3;
+    --muted:  #9b968e;
+    --rule:   #2e3239;
+    --hair:   #23272d;
+    --accent: #e0705f;
+    --accent-soft: rgba(224, 112, 95, .12);
+    --warn:   #d9a441;
+    --warn-soft: rgba(217, 164, 65, .12);
+  }
+}
+:root[data-theme="dark"] {
+  --paper:  #14161a; --raised: #1b1e23; --ink: #e8e6e3; --muted: #9b968e;
+  --rule:   #2e3239; --hair: #23272d; --accent: #e0705f;
+  --accent-soft: rgba(224, 112, 95, .12);
+  --warn: #d9a441; --warn-soft: rgba(217, 164, 65, .12);
+}
+:root[data-theme="light"] {
+  --paper:  #f7f6f4; --raised: #ffffff; --ink: #15171a; --muted: #6b6862;
+  --rule:   #dcd8d2; --hair: #e8e5e0; --accent: #9a2118;
+  --accent-soft: rgba(154, 33, 24, .08);
+  --warn: #8a5a00; --warn-soft: rgba(138, 90, 0, .09);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.62 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.25rem; }
+
+.vh {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 20;
+  background: var(--accent); color: #fff; padding: .6rem 1rem;
+}
+.skip:focus { left: 0; }
+
+a { color: var(--accent); text-underline-offset: .18em; }
+a:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px;
+}
+
+/* ------------------------------------------------------------- masthead */
+
+.masthead {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.masthead-in {
+  display: flex; align-items: center; gap: 1rem;
+  min-height: 3.75rem; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: baseline; gap: .5rem; text-decoration: none; color: var(--ink); }
+.brand-name { font: 600 1.05rem/1 var(--sans); letter-spacing: -.02em; }
+.brand-sub {
+  font: 500 .7rem/1 var(--mono); letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+}
+.tools { margin-left: auto; display: flex; align-items: center; gap: .6rem; }
+
+.search { display: block; }
+.search input {
+  font: 400 .92rem/1 var(--sans);
+  color: var(--ink); background: var(--raised);
+  border: 1px solid var(--rule); border-radius: 4px;
+  padding: .5rem .7rem; width: 12rem; max-width: 42vw;
+}
+.search input::placeholder { color: var(--muted); }
+
+.dl {
+  font: 500 .74rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 4px;
+  padding: .55rem .7rem; text-decoration: none; white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- results */
+
+.results {
+  border-top: 1px solid var(--rule);
+  background: var(--raised);
+  max-height: min(60vh, 30rem); overflow-y: auto;
+}
+.results-in { max-width: 68rem; margin: 0 auto; padding: .5rem 1.25rem 1rem; }
+.hit { display: block; padding: .75rem 0; border-bottom: 1px solid var(--hair); text-decoration: none; color: inherit; }
+.hit:last-child { border-bottom: 0; }
+.hit-p { font: 500 .68rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.hit-h { display: block; font-weight: 600; margin: .2rem 0 .15rem; color: var(--accent); }
+.hit-x { display: block; font-size: .9rem; color: var(--muted); }
+.hit mark { background: var(--accent-soft); color: inherit; padding: 0 .1em; border-radius: 2px; }
+.no-hits { padding: 1rem 0; color: var(--muted); font-size: .95rem; }
+
+/* ------------------------------------------------------------- layout */
+
+.shell { display: grid; gap: 2.5rem; padding-top: 2.5rem; padding-bottom: 4rem; }
+@media (min-width: 56rem) {
+  .shell { grid-template-columns: 13rem minmax(0, 1fr); gap: 3.5rem; }
+  .sidebar { position: sticky; top: 5rem; align-self: start; }
+}
+
+.nav-list { list-style: none; margin: 0; padding: 0; }
+.nav-list li { margin: 0; }
+.nav-list a {
+  display: block; padding: .4rem 0; text-decoration: none; color: var(--ink);
+  font-size: .95rem; border-bottom: 1px solid var(--hair);
+}
+.nav-list a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+
+.content { min-width: 0; max-width: var(--measure); }
+
+/* ------------------------------------------------------------- type */
+
+h1 {
+  font: 600 clamp(2rem, 5.5vw, 3rem)/1.08 var(--sans);
+  letter-spacing: -.03em; text-wrap: balance; margin: 0 0 .9rem;
+}
+h1 em { font-style: normal; color: var(--accent); }
+h2 {
+  font: 600 clamp(1.3rem, 3vw, 1.6rem)/1.22 var(--sans);
+  letter-spacing: -.02em; text-wrap: balance; margin: 0 0 .7rem;
+}
+h3 { font: 600 1.02rem/1.35 var(--sans); margin: 1.75rem 0 .35rem; }
+p, li { margin: 0 0 1rem; }
+li { margin-bottom: .4rem; }
+ul, ol { padding-left: 1.15rem; }
+strong { font-weight: 600; }
+code {
+  font: 400 .88em/1.4 var(--mono);
+  background: rgba(127,127,127,.14); padding: .1rem .35rem; border-radius: 3px;
+}
+
+.eyebrow {
+  font: 500 .72rem/1 var(--mono); letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 .9rem;
+}
+.lede { font-size: 1.14rem; color: var(--muted); }
+.hero { margin-bottom: 2.5rem; }
+.page-head { margin-bottom: 2rem; }
+.page-head .eyebrow { color: var(--accent); }
+
+.sec { padding: 2.5rem 0 0; }
+.sec + .sec { border-top: 1px solid var(--hair); margin-top: 1rem; }
+h2 .anchor { color: inherit; text-decoration: none; }
+h2 .anchor:hover { color: var(--accent); }
+
+/* ------------------------------------------------------------- blocks */
+
+.toc {
+  border: 1px solid var(--rule); border-radius: 4px;
+  padding: 1rem 1.15rem; margin: 0 0 1rem;
+}
+.toc-h {
+  font: 500 .7rem/1 var(--mono); letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 .6rem;
+}
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: .25rem 0; font-size: .95rem; }
+
+.pull {
+  border-left: 3px solid var(--accent);
+  padding: .15rem 0 .15rem 1.1rem; margin: 1.75rem 0;
+}
+.pull p { font-size: 1.06rem; margin: 0; }
+
+.note, .warn {
+  border-radius: 4px; padding: .9rem 1.1rem; margin: 1.5rem 0;
+  font-size: .96rem;
+}
+.note { background: var(--accent-soft); }
+.warn { background: var(--warn-soft); border-left: 3px solid var(--warn); }
+.note p:last-child, .warn p:last-child { margin-bottom: 0; }
+
+.cards {
+  display: grid; gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+  margin: 1.5rem 0;
+}
+@media (min-width: 34rem) { .cards { grid-template-columns: 1fr 1fr; } }
+.cards > div { background: var(--paper); padding: 1.15rem 1.25rem; }
+.cards h3 { margin-top: 0; }
+.cards p { font-size: .95rem; color: var(--muted); margin-bottom: 0; }
+
+.spec { border-top: 1px solid var(--rule); margin: 1.5rem 0; }
+.spec > div {
+  display: grid; gap: .15rem 1.5rem; grid-template-columns: 1fr;
+  padding: .95rem 0; border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 40rem) { .spec > div { grid-template-columns: 10rem 1fr; } }
+.spec .k {
+  font: 500 .72rem/1.5 var(--mono); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin: 0; padding-top: .2rem;
+}
+.spec .v p:last-child { margin-bottom: 0; }
+
+.scroll { overflow-x: auto; margin: 1.5rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td {
+  text-align: left; vertical-align: top;
+  padding: .55rem .8rem .55rem 0; border-bottom: 1px solid var(--hair);
+}
+thead th {
+  font: 500 .72rem/1.4 var(--mono); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+}
+tbody th { font-weight: 600; }
+td.num, .price td.num {
+  font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.price td.num { font-weight: 600; }
+.ref tbody th code { background: none; padding: 0; color: var(--accent); }
+
+.jumps { display: grid; gap: 1px; background: var(--rule);
+         border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+@media (min-width: 34rem) { .jumps { grid-template-columns: 1fr 1fr; } }
+.jump { display: block; background: var(--paper); padding: 1rem 1.15rem; text-decoration: none; color: inherit; }
+.jump-t { display: block; font-weight: 600; color: var(--accent); margin-bottom: .15rem; }
+.jump-b { display: block; font-size: .92rem; color: var(--muted); }
+
+.site-foot {
+  border-top: 1px solid var(--rule); padding: 2rem 1.25rem 4rem;
+  color: var(--muted); font-size: .92rem;
+}
+.site-foot p { margin-bottom: .35rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  a, .jump { transition: opacity .15s ease, background-color .15s ease; }
+  .jump:hover { background: var(--raised); }
+}
+
+/* the download has no sidebar and no live search */
+.shell { display: block; }
+.content { max-width: 44rem; margin: 0 auto; }
+.chapter { margin-top: 4.5rem; padding-top: 2.5rem; border-top: 2px solid var(--accent); }
+.chapter:first-of-type { margin-top: 2.5rem; }
+.chapter-h { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+.big-toc ol { padding-left: 1.1rem; }
+.big-toc > ol > li { margin: .85rem 0; font-weight: 600; }
+.big-toc ul { list-style: none; padding-left: 0; margin: .3rem 0 0; font-weight: 400; }
+.big-toc ul li { margin: .12rem 0; font-size: .93rem; }
+@media print {
+  body { background: #fff; color: #000; font-size: 11pt; }
+  .chapter { page-break-before: always; border-top: 0; }
+  .chapter:first-of-type { page-break-before: avoid; }
+  .sec { page-break-inside: avoid; }
+  a { color: #000; text-decoration: none; }
+  .big-toc { page-break-after: always; }
+}
+</style>
+</head>
+<body>
+<div class="wrap shell"><main class="content">
+<div class='hero'><p class='eyebrow'>Manifest &amp; Manifest Studio</p><h1>The complete guide</h1><p class='lede'>Everything in the online guide, in one file you can keep, search with your browser's own find, or print. Updated 1 September 2026.</p></div><nav class='toc big-toc' aria-label='Contents'><p class='toc-h'>Contents</p><ol><li><a href='#index'>Overview</a><ul><li><a href='#what'>What Manifest is</a></li><li><a href='#idea'>The one idea</a></li><li><a href='#offline'>It works with no signal</a></li><li><a href='#who'>Who it suits</a></li></ul></li><li><a href='#start'>Getting started</a><ul><li><a href='#two-apps'>The two apps</a></li><li><a href='#samples'>Start from a worked example</a></li><li><a href='#first-hour'>A sensible first hour</a></li></ul></li><li><a href='#catalogue'>Your catalogue</a><ul><li><a href='#fields'>Fields</a></li><li><a href='#structure'>Structure</a></li><li><a href='#words'>Your own words</a></li><li><a href='#look'>Appearance</a></li><li><a href='#ai'>Converting an existing list with AI</a></li><li><a href='#quality'>Catalogue quality</a></li><li><a href='#many'>More than one catalogue</a></li></ul></li><li><a href='#working'>On the floor</a><ul><li><a href='#browse'>Browsing and the part page</a></li><li><a href='#search'>Search</a></li><li><a href='#scan'>Scanning</a></li><li><a href='#plans'>Floor plans</a></li><li><a href='#builds'>Builds and assemblies</a></li><li><a href='#selecting'>Doing something to several parts at once</a></li><li><a href='#photos'>Photographs and attachments</a></li><li><a href='#myparts'>My parts</a></li></ul></li><li><a href='#jobs'>Jobs</a><ul><li><a href='#forms'>The job sheet is a form you designed</a></li><li><a href='#onsite'>Filling one in on site</a></li><li><a href='#completing'>Completing and reopening</a></li><li><a href='#sending'>Getting completed work off the handset</a></li><li><a href='#control'>Control over what leaves, and when</a></li><li><a href='#templates'>Templates</a></li><li><a href='#byfile'>Moving jobs by file</a></li><li><a href='#retention'>How long jobs are kept</a></li><li><a href='#inbound'>Work arriving from elsewhere</a></li></ul></li><li><a href='#labels'>Labels</a><ul><li><a href='#printing'>Printing labels</a></li><li><a href='#stocks'>Label stocks</a></li></ul></li><li><a href='#data'>Getting data in and out</a><ul><li><a href='#spreadsheet'>Importing a spreadsheet</a></li><li><a href='#exports'>Exporting your catalogue</a></li><li><a href='#server'>The catalogue server</a></li><li><a href='#updates'>Catalogue updates</a></li></ul></li><li><a href='#safety'>Fleet, backup and privacy</a><ul><li><a href='#pairing'>Pairing handsets</a></li><li><a href='#recovery'>The recovery file</a></li><li><a href='#removing'>Removing a handset</a></li><li><a href='#transfer'>Copying settings to another device</a></li><li><a href='#privacy'>What we can see</a></li></ul></li><li><a href='#pricing'>Price and scope</a><ul><li><a href='#price'>One payment, no subscription</a></li><li><a href='#addon'>The catalogue server add-on</a></li><li><a href='#not'>What it deliberately is not</a></li></ul></li><li><a href='#questions'>Questions</a><ul><li><a href='#trying'>Can I try it before paying?</a></li><li><a href='#leaving'>What happens to my data if I stop using it?</a></li><li><a href='#internet'>Does it need the internet at all?</a></li><li><a href='#size'>How big can a catalogue be?</a></li><li><a href='#existing'>I already have my parts in a spreadsheet</a></li><li><a href='#accounts'>How do I manage users?</a></li><li><a href='#android'>Is there an iPhone version?</a></li><li><a href='#support'>Something is wrong, or I need a hand</a></li></ul></li><li><a href='#reference'>Reference</a><ul><li><a href='#types'>Field types</a></li><li><a href='#glossary'>Glossary</a></li></ul></li></ol></nav><section id='index' class='chapter'><p class='eyebrow'>Overview</p><h1 class='chapter-h'>Overview</h1><p class='lede'>What Manifest is, who it is for, and the one idea behind it.</p></section><section id='what' class='sec'><h2>What Manifest is</h2>
+<p><strong>Manifest</strong> is a parts catalogue and job sheet for people who
+work with their hands. It runs on an ordinary Android phone, works with no
+signal, and takes its entire shape — fields, categories, colours, even the words
+on the buttons — from a document you control.</p>
+
+<p>It comes as a pair of apps. <strong>Manifest</strong> is what the person on
+the tools carries. <strong>Manifest Studio</strong> is where the catalogue is
+built and the job forms are designed.</p>
+</section><section id='idea' class='sec'><h2>The one idea</h2>
+<p>Most trade software gives you fixed fields and asks you to describe your
+business in somebody else's vocabulary. You end up with a “Notes” column holding
+the three things that actually matter.</p>
+
+<p>Manifest works the other way round. One document carries your field
+definitions, your categories, your appearance and your parts, and the app
+assembles itself from that document. Change the document and the app changes on
+every handset holding it.</p>
+
+<div class="pull"><p>A joiner browses by material and thickness. A fire
+contractor browses by extinguishing agent and service date. The same
+application, unmodified — no plugins, no configuration consultant, no per-seat
+fee.</p></div>
+</section><section id='offline' class='sec'><h2>It works with no signal</h2>
+<p>Signal is worst exactly where the parts are: a plant room, a basement, a
+loading bay, a site with no mast for a mile. Offline is not a mode you switch
+on — it is the normal state.</p>
+
+<p>Search, browse, scan a code, open a drawing, fill in a job sheet, take a
+signature: all of it happens on the handset with nothing to reach. There is no
+spinner waiting on a server, because there is no server. Where something
+genuinely needs a network — fetching a catalogue update, sending a finished
+job — it says so, and waits until there is one.</p>
+</section><section id='who' class='sec'><h2>Who it suits</h2>
+<ul>
+<li>A trade business with a parts list, a stores area or a van stock.</li>
+<li>Anyone servicing equipment on site who has to record what was done.</li>
+<li>Hire businesses tracking individual assets rather than models.</li>
+<li>Anyone whose data does not fit the boxes their current software provides.</li>
+</ul>
+
+<p>It suits you less well if you need live stock quantities, scheduling and
+dispatch, or accounts for individual users. <a href="#not">What it
+deliberately is not</a> covers that honestly.</p>
+</section><section id='start' class='chapter'><p class='eyebrow'>Getting started</p><h1 class='chapter-h'>Getting started</h1><p class='lede'>Installing the pair, the six worked examples, and your first hour.</p></section><section id='two-apps' class='sec'><h2>The two apps</h2>
+<div class="cards">
+  <div><h3>Manifest</h3><p>For the person on the tools. Browse, search, scan,
+  open floor plans, fill in job sheets. It reads the catalogue rather than
+  editing it, so nobody loses a week's authoring on a busy Friday.</p></div>
+  <div><h3>Manifest Studio</h3><p>Everything above, plus authoring: build the
+  catalogue, take photographs, mark up floor plans, design job forms, print
+  labels, and hand the finished catalogue to your team.</p></div>
+</div>
+
+<p>Both can live on the same phone; in the launcher they appear as
+<em>Manifest</em> and <em>Manifest Studio</em>. Studio asks for the phone's PIN,
+pattern or fingerprint each time it opens, and will not run at all on a handset
+with no screen lock — it holds your whole catalogue and the key your fleet
+trusts.</p>
+</section><section id='samples' class='sec'><h2>Start from a worked example</h2>
+<p>Six complete sample catalogues ship inside the app, one per trade, each with
+forty parts, floor plans and assemblies. They exist to prove the claim on the
+front page: they look nothing like each other, and they run unchanged in the
+same application.</p>
+<div class='scroll'><table><thead><tr><th scope='col'>Trade</th><th scope='col'>Shaped around</th></tr></thead><tbody><tr><th scope='row'>Vehicle workshop</th><td>Parts by manufacturer, and what they fit</td></tr>
+<tr><th scope='row'>Electrical contractor</th><td>Stock by rating, and where it lives in the van</td></tr>
+<tr><th scope='row'>Joinery and carpentry</th><td>Timber by material, thickness and finish</td></tr>
+<tr><th scope='row'>Plumbing and heating</th><td>Fittings by pipe size and material</td></tr>
+<tr><th scope='row'>Fire protection</th><td>Equipment by extinguishing agent, with service dates</td></tr>
+<tr><th scope='row'>Equipment hire</th><td>Individual assets by tag, serial and condition</td></tr></tbody></table></div>
+<p>The last is deliberately the odd one out. A hire business identifies the
+<em>thing</em>, not the model — two identical speakers are two records, and the
+title field is an asset tag rather than a part number. That is the same app with
+a different idea of what a record even is.</p>
+
+<div class="note"><p><strong>Choosing an example adopts it.</strong> It becomes
+your own catalogue under your own identity, rather than staying a shared sample.
+Your first five minutes are “delete what we don't stock” instead of “type in
+five hundred parts”.</p></div>
+</section><section id='first-hour' class='sec'><h2>A sensible first hour</h2>
+<ol>
+<li>Install <strong>Manifest Studio</strong> and let it take you through the
+credential prompt.</li>
+<li>Load the sample nearest your trade, and browse it until the structure makes
+sense.</li>
+<li>Either edit that sample into your own catalogue, or
+<a href="#spreadsheet">import your existing spreadsheet</a> over the
+top of it.</li>
+<li>Set your <a href="#look">colours and logo</a> and your
+<a href="#words">own words</a> for the sections.</li>
+<li>Install <strong>Manifest</strong> on a second handset and
+<a href="#pairing">pair it</a>.</li>
+<li>Write your <a href="#recovery">recovery file</a> before you have
+anything you would miss.</li>
+</ol>
+
+<div class="warn"><p>Step six is the one people skip. A handset is a thing that
+gets dropped, stolen and left on a roof, and there is no service holding a copy
+for you.</p></div>
+</section><section id='catalogue' class='chapter'><p class='eyebrow'>Your catalogue</p><h1 class='chapter-h'>Your catalogue</h1><p class='lede'>Fields, structure, your own words, appearance, and getting a catalogue built quickly.</p></section><section id='fields' class='sec'><h2>Fields</h2>
+<p>A record carries whatever your trade needs it to. There are <strong>44 field
+types</strong>, and each one knows what it is — so a date gets a date picker, a
+duration gets hours and minutes, money is stored as an exact amount with its
+currency rather than a rounded number, a phone number dials, and a link opens.</p>
+
+<p>For each field you decide the label, whether it is required, whether it is
+searchable and how heavily it is weighted, where it appears on the part page,
+and any bounds it must respect.</p>
+
+<p>The full list is in the <a href="#types">field type
+reference</a>.</p>
+</section><section id='structure' class='sec'><h2>Structure</h2>
+<p>You decide how parts are grouped and how deep the tree goes — by category, by
+location, by rating, by whatever your trade actually uses to find things. A
+catalogue can be browsed on more than one axis at once, so the same stock can be
+reached by category and by where it lives.</p>
+
+<p>Filters you use constantly can be pinned, so they survive moving around the
+app instead of needing to be set again each time.</p>
+</section><section id='words' class='sec'><h2>Your own words</h2>
+<p>The app's own section names are yours. A <strong>Build</strong> can be a Kit,
+an Assembly, a Rig or a Job Pack. <strong>Plans</strong> can be Sites or
+Drawings. A <strong>Job</strong> can be a Visit, a Service or a Call.</p>
+
+<p>These are not translations. They are your nouns, carried inside your
+catalogue, so the identical installed app uses different words on different
+companies' handsets — including in menus, empty states and confirmation
+messages.</p>
+</section><section id='look' class='sec'><h2>Appearance</h2>
+<p>Your colours and your logo travel in the catalogue, so the app on your team's
+phones looks like your company rather than like ours. Light and dark are both
+handled, and the colours are checked for contrast so a brand colour cannot make
+text unreadable.</p>
+</section><section id='ai' class='sec'><h2>Converting an existing list with AI</h2>
+<p>Studio can export a <strong>schema for AI conversion</strong>: a description
+of your catalogue's structure, with no parts and no prices in it.</p>
+
+<p>Send that to any AI assistant along with your own parts list — in whatever
+shape it happens to be, however inconsistent — and it will give you back a file
+Manifest can import. It is the fastest route from a twenty-year-old spreadsheet
+to a working catalogue.</p>
+
+<p>You can also export the schema alone to set up a second catalogue with the
+same shape as the first.</p>
+</section><section id='quality' class='sec'><h2>Catalogue quality</h2>
+<p>Studio can review the catalogue and report what looks wrong or unfinished —
+the sort of thing that is invisible while you are typing and obvious to somebody
+using it in a van three weeks later.</p>
+</section><section id='many' class='sec'><h2>More than one catalogue</h2>
+<p>A business can hold several catalogues on one Studio — one per area of the
+business, or one per site — and move between them. Each is separate: its own
+fields, its own parts, its own appearance.</p>
+</section><section id='working' class='chapter'><p class='eyebrow'>On the floor</p><h1 class='chapter-h'>On the floor</h1><p class='lede'>Browsing, search, scanning, floor plans, assemblies and your own private notes.</p></section><section id='browse' class='sec'><h2>Browsing and the part page</h2>
+<p>Parts are listed densely, because a person holding a phone in a cold plant
+room wants to see ten of them, not two. Part numbers are set in a monospaced
+face so <code>0</code> and <code>O</code> cannot be confused when you are
+ordering one.</p>
+
+<p>A part page shows every field you defined, in the order and grouping you
+chose, with photographs, attached datasheets and any references to other
+parts.</p>
+</section><section id='search' class='sec'><h2>Search</h2>
+<p>Every area has a search bar, and it sits within thumb reach rather than at
+the top of the screen where a one-handed grip cannot get to it.</p>
+
+<p>Search covers the fields you marked searchable, weighted the way you asked —
+a part number ought to beat a description. Results appear as you type.</p>
+</section><section id='scan' class='sec'><h2>Scanning</h2>
+<p>Point the camera at a QR code or a barcode and land directly on that part.
+The scanner reads 2D codes and ordinary 1D barcodes.</p>
+
+<p>Scanning also <strong>fills fields in</strong>: a job sheet asking for a
+panel serial can have it scanned in rather than typed with gloves on. Codes a
+manufacturer already prints can be adopted, so you do not have to relabel stock
+that already carries a usable code.</p>
+</section><section id='plans' class='sec'><h2>Floor plans</h2>
+<p>Drop your site drawings in, mark out the zones, and place parts on the map.
+Tap a zone to see everything in it, and go straight from the map to a part
+page.</p>
+
+<p>It earns its keep the first time somebody is sent to a building they have
+never been to, and needs to find the panel before they can start.</p>
+</section><section id='builds' class='sec'><h2>Builds and assemblies</h2>
+<p>Group parts into the things you actually book out or install as a unit — an
+assembly, a kit, a rig, a job pack. Select several parts at once and add them to
+a build in one action.</p>
+</section><section id='selecting' class='sec'><h2>Doing something to several parts at once</h2>
+<p>Select a run of parts — or everything in a zone, in one action — and then act
+on the selection: print labels for all of them, or add them all to a build.</p>
+
+<p>It is the difference between labelling a stores area in an afternoon and
+labelling it one part at a time.</p>
+</section><section id='photos' class='sec'><h2>Photographs and attachments</h2>
+<p>A part can carry photographs taken with the phone, and attached documents —
+a datasheet, a certificate, a wiring diagram. They travel with the catalogue in
+a bundle, so a handset with no signal still has the drawing.</p>
+
+<p>Parts can also point at other parts, so a fitting can name what it fits and
+you can move between them.</p>
+</section><section id='myparts' class='sec'><h2>My parts</h2>
+<p>Anyone can mark parts as their own favourites and attach a private note to a
+part — what you know about it, what it actually fits, which supplier is
+reliable.</p>
+
+<div class="note"><p>Favourites and notes stay <strong>on that phone</strong>.
+They are not part of the catalogue and they are not sent anywhere, so an
+engineer's own working knowledge is theirs and does not travel with an
+export.</p></div>
+</section><section id='jobs' class='chapter'><p class='eyebrow'>Jobs</p><h1 class='chapter-h'>Jobs</h1><p class='lede'>Designing job sheets, filling them in on site, and getting completed work off the handset.</p></section><section id='forms' class='sec'><h2>The job sheet is a form you designed</h2>
+<p>A job form is made of the same 44 field types as everything else and lives in
+your catalogue. Whatever your trade records — visit type, devices tested,
+defects found, outcome, next service date, invoice total — is a field you
+defined, not a box we guessed at.</p>
+
+<p><strong>Templates</strong> mean a recurring visit starts half filled in. An
+annual service and a callback can be different forms.</p>
+</section><section id='onsite' class='sec'><h2>Filling one in on site</h2>
+<div class="spec">
+  <div><p class="k">Time</p><div class="v"><p>A timer runs while the work does,
+  so time on site is recorded rather than remembered back at the van.</p></div></div>
+  <div><p class="k">Photographs</p><div class="v"><p>Taken on the spot and
+  attached to the job.</p></div></div>
+  <div><p class="k">Signatures</p><div class="v"><p>Captured on the glass. Once
+  given, a signature cannot be quietly changed — which is the entire point of
+  having one.</p></div></div>
+  <div><p class="k">Parts used</p><div class="v"><p>Picked from the catalogue
+  through the same search as the rest of the app, so a fitted part resolves to a
+  real record rather than a typed string that nobody can reconcile
+  later.</p></div></div>
+  <div><p class="k">Scanning</p><div class="v"><p>Serials and asset tags can be
+  scanned straight into their fields.</p></div></div>
+</div>
+</section><section id='completing' class='sec'><h2>Completing and reopening</h2>
+<p>A job is marked complete when the work is done. Required fields must be
+answered first — the form refuses rather than silently saving a half-finished
+record.</p>
+
+<p>A completed job can be reopened if something was missed. Deleted jobs go to a
+bin and stay recoverable for seven days.</p>
+</section><section id='sending' class='sec'><h2>Getting completed work off the handset</h2>
+<p>A finished job can be sent automatically, to as many destinations as you
+like. You configure these once in Studio and they travel to the fleet with the
+catalogue, arriving switched off until somebody turns them on.</p>
+
+<div class="scroll"><table>
+<thead><tr><th scope="col">Destination</th><th scope="col">What it is for</th></tr></thead>
+<tbody>
+<tr><th scope="row">A folder</th><td>A shared drive or a watched folder. The one
+route that needs no connectivity at all — the file is written the moment the job
+is done. You choose the folder from the phone's own file picker, and the
+permission is kept so it survives a restart</td></tr>
+<tr><th scope="row">A web address</th><td>Your own system, your CRM, a webhook.
+Choose the body format and map your fields to whatever names the far end
+expects</td></tr>
+<tr><th scope="row">Email</th><td>Straight to the service desk. Email cannot
+confirm delivery, and the app says so where you choose it</td></tr>
+</tbody></table></div>
+
+<p>Body formats for a web destination: <strong>JSON</strong>,
+<strong>CSV</strong>, <strong>XML</strong>, <strong>form fields</strong> or
+<strong>JSON lines</strong>. Sign-in is supported in several shapes, including
+bearer tokens, API keys, basic authentication and signed requests.</p>
+</section><section id='control' class='sec'><h2>Control over what leaves, and when</h2>
+<ul>
+<li><strong>A field mapping</strong> decides exactly which values are sent and
+what each is called at the other end. If a destination also attaches
+photographs or signatures, the screen lists those separately rather than letting
+a mapping imply it is the whole story.</li>
+<li><strong>Send a test</strong> sends a sample completion so you can see it
+arrive.</li>
+<li><strong>Show the request</strong> displays precisely what would leave the
+handset, before any real job does.</li>
+<li><strong>A send window</strong> holds work until working hours.</li>
+<li><strong>Wi-fi only</strong> holds work until the handset is off mobile
+data.</li>
+<li><strong>Named handsets</strong> can be the only ones that send to a given
+destination, for a pilot.</li>
+</ul>
+
+<p>Anything not yet sent is listed plainly under <em>Waiting to send</em>, with
+the reason. Nothing is deleted for having been sent unless you asked for that
+explicitly.</p>
+</section><section id='templates' class='sec'><h2>Templates</h2>
+<p>A template is a job form with some of it already answered. An annual service,
+a callback, a commissioning visit and a remedial can each be their own template,
+so the engineer picks one at the start and begins with the right fields in front
+of them rather than the same blank form every time.</p>
+
+<p>Templates live in the catalogue, so changing one changes it for the whole
+fleet at the next catalogue update.</p>
+</section><section id='byfile' class='sec'><h2>Moving jobs by file</h2>
+<p>Jobs can be exported to a file and imported on another handset. That is the
+route for a business with no destinations configured at all: the work is done on
+a phone, the file is handed over, and it opens on the machine that needs it —
+with the photographs and signatures intact.</p>
+
+<p>It is also how work gets off a handset that is about to be replaced.</p>
+</section><section id='retention' class='sec'><h2>How long jobs are kept</h2>
+<p>You can set how long completed jobs stay on a handset, and separately how
+long before the personal details in them are <strong>anonymised</strong>.
+Anonymising always comes before deleting, so a record can lose the customer's
+name and signature while the engineering facts stay.</p>
+
+<p>Leave either empty and nothing happens on that schedule. Deleted jobs sit in
+a bin for seven days before they go for good.</p>
+
+<div class="note"><p>The clock does not run on work that has not been sent yet.
+A job waiting for a destination is not quietly deleted out from under you
+because a retention period elapsed.</p></div>
+</section><section id='inbound' class='sec'><h2>Work arriving from elsewhere</h2>
+<p>Jobs can travel the other way. Point the app at a dispatch list — your own
+system, a shared file — and the day's work appears on the right handset, routed
+by whatever rule the source specifies. Fetching again reconciles the list rather
+than duplicating it.</p>
+</section><section id='labels' class='chapter'><p class='eyebrow'>Labels</p><h1 class='chapter-h'>Labels</h1><p class='lede'>Printing codes that scan back to the exact record, on stock you already buy.</p></section><section id='printing' class='sec'><h2>Printing labels</h2>
+<p>Print a QR or barcode label for a part, stick it on the shelf, the bin or the
+asset, and scanning it later opens that exact record.</p>
+
+<p>Select any number of parts — a whole zone at once, if you like — choose your
+stock, and Manifest lays out the sheet and renders a PDF. It tells you how many
+labels, how many to a page and how many pages before it prints anything.</p>
+</section><section id='stocks' class='sec'><h2>Label stocks</h2>
+<p>Manifest knows the layout of <strong>28 label stocks</strong>:</p>
+
+<ul>
+<li><strong>Plain paper</strong> — A4, A5 and Letter.</li>
+<li><strong>Avery</strong> — including L7160, L7161, L7163, L7165, L7169, L7651,
+5160 and 5163.</li>
+<li><strong>Brother</strong> — the DK die-cut and continuous rolls, and TZe
+tape.</li>
+<li><strong>Dymo</strong> — the common LabelWriter sizes and D1 tape.</li>
+<li><strong>Zebra</strong>.</li>
+</ul>
+
+<p>The output is an ordinary PDF, so it goes to any printer you already have,
+including the small thermal ones. Reprinting a single lost label does not mean
+reprinting the sheet.</p>
+</section><section id='data' class='chapter'><p class='eyebrow'>Getting data in and out</p><h1 class='chapter-h'>Getting data in and out</h1><p class='lede'>Spreadsheet import, exports, distributing to a fleet, the catalogue server and updates.</p></section><section id='spreadsheet' class='sec'><h2>Importing a spreadsheet</h2>
+<p>Almost every business already has its parts in a spreadsheet. Studio imports
+<strong>CSV and Excel</strong> files with a column mapping step: it reads your
+headings, works out what each column is and what type it holds, and lets you
+correct it.</p>
+
+<p>It handles the things that usually break an import — a heading row that is
+not the first row, mixed date formats, currency symbols, decimal commas — and it
+tells you exactly what it is about to do before it does it:</p>
+
+<div class="note"><p><code>5 to add, 0 to update, 0 rows skipped, 0 cells left
+empty</code> — and then, plainly, <code>5 added, 0 changed, 40 removed</code>.
+You see the removals before you agree to them.</p></div>
+
+<p>You can <strong>replace</strong> a catalogue outright, or <strong>merge</strong>
+a newer price list into the one you already have without doubling anything
+up.</p>
+</section><section id='exports' class='sec'><h2>Exporting your catalogue</h2>
+<div class="scroll"><table>
+<thead><tr><th scope="col">Route</th><th scope="col">What it means</th></tr></thead>
+<tbody>
+<tr><th scope="row">Plain export</th><td>An ordinary readable file. Your data,
+yours to keep, openable by anything. Any stored credentials are stripped out of
+it</td></tr>
+<tr><th scope="row">Sealed export</th><td>Encrypted to the specific handsets you
+name. Only those devices can open it</td></tr>
+<tr><th scope="row">Bundle</th><td>The catalogue together with its photographs
+and drawings, in one archive</td></tr>
+<tr><th scope="row">Catalogue server</th><td>Handsets fetch updates themselves
+over your own network</td></tr>
+</tbody></table></div>
+
+<p>Exports are named after the catalogue and the date, so a folder of them can
+be read at a glance.</p>
+
+<div class="note"><p><strong>There is no lock-in.</strong> The plain export is a
+readable document you can keep, archive or move elsewhere. That is deliberate: a
+format only our software can read would be lock-in wearing a security
+badge.</p></div>
+</section><section id='server' class='sec'><h2>The catalogue server</h2>
+<p>An optional extra for larger fleets. Studio exports a small, ready-to-run
+program for <strong>Windows, Linux or a Raspberry Pi</strong>, together with its
+configuration and its key.</p>
+
+<p>Put it on a machine in your building, and every handset picks up catalogue
+updates over your own network — no web host, no hosting bill, nothing exposed to
+the internet.</p>
+
+<h3>What it does and refuses</h3>
+<ul>
+<li>The connection is <strong>pinned</strong>: handsets accept that one machine
+and no other, so nothing on the network can impersonate it.</li>
+<li>It <strong>refuses any request</strong> that does not carry the shared secret
+it was issued with.</li>
+<li>It will not serve its own key, will not list a directory, and serves nothing
+except the catalogue.</li>
+<li>It mints its own certificate on first run. There is nothing to configure and
+no certificate to buy.</li>
+</ul>
+
+<p>Once bought, <em>Export catalogue server</em> appears in Studio under
+Settings ▸ Catalogue. Before it is bought the row is absent rather than greyed
+out, because a permanently dead control is an advertisement wearing a control's
+clothes.</p>
+</section><section id='updates' class='sec'><h2>Catalogue updates</h2>
+<p>A catalogue can name an address it updates from — your catalogue server, or
+any https address you control. Handsets check on their own, at an interval you
+set, no more often than every fifteen minutes.</p>
+
+<div class="note"><p><strong>An update is offered, never applied behind
+somebody's back.</strong> A fetched catalogue goes through the same preview,
+signature check and confirmation as a file handed over by hand — mid-shift, on
+somebody's phone, is not the moment to change what the app says.</p></div>
+
+<p>A source offering an older catalogue than the handset already holds is
+refused, and the message says who has to act.</p>
+</section><section id='safety' class='chapter'><p class='eyebrow'>Fleet, backup and privacy</p><h1 class='chapter-h'>Fleet, backup and privacy</h1><p class='lede'>Pairing handsets, the recovery file, and what we can and cannot see.</p></section><section id='pairing' class='sec'><h2>Pairing handsets</h2>
+<p>Handsets are paired to a Studio face to face. Each device shows a code, you
+check they match, and from then on that handset trusts catalogues that Studio
+has signed.</p>
+
+<p>Checking the code is the step that matters: it is the only thing proving the
+request came from the device in front of you, rather than from somebody else
+entirely. Several handsets can be paired in one go from a folder of requests, and
+each one is still confirmed individually.</p>
+
+<p>A handset that is wiped and set up again can be paired again without spending
+a second slot from your allowance.</p>
+</section><section id='recovery' class='sec'><h2>The recovery file</h2>
+<p>A phone is a thing that gets dropped, stolen and left on a roof. So Studio
+writes a <strong>recovery file</strong>: one encrypted file holding your Studio
+identity, your catalogue and the key your fleet trusts — including the
+photographs and signatures attached to jobs.</p>
+
+<p>Restore it on a new phone and that phone <strong>is</strong> your Studio. The
+handsets you already paired carry on working, with nothing to redo at their
+end.</p>
+
+<div class="warn"><p>It is encrypted with a passphrase you choose, and
+<strong>we cannot recover it</strong>, because we never have it. There is no
+service, no reset link and no back door. Write the passphrase down somewhere
+that is not the phone.</p></div>
+
+<p>Manifest reminds you when there is no recovery file, and tells you how much
+work is currently held on that handset alone.</p>
+</section><section id='removing' class='sec'><h2>Removing a handset</h2>
+<p>Removing a paired handset frees a slot. It is worth being exact about what it
+does and does not do, and the app says so on the screen rather than leaving you
+to find out:</p>
+
+<div class="warn"><p><strong>Removing revokes nothing.</strong> That handset
+keeps the fleet key it already has and goes on opening every catalogue it
+already holds, for ever. There is no way to reach it and no server to tell it
+otherwise. What removal does is take it off the list, so nothing you seal
+<em>from now on</em> can be opened by it.</p></div>
+
+<p>If a handset is genuinely lost or in the wrong hands, the honest answer is
+<strong>Remove and re-key</strong>: a new fleet key is created and wrapped for
+the handsets still paired, so future catalogues are readable by them and not by
+the missing device.</p>
+
+<p>Re-keying does not by itself stop anything already on that phone being read.
+Nothing can, once a file is on a device you cannot reach — and an app claiming
+otherwise would be lying to you.</p>
+</section><section id='transfer' class='sec'><h2>Copying settings to another device</h2>
+<p>Destination and source settings can be copied from one device to another —
+useful when a second person needs the same job delivery set up, or when a Studio
+is being replaced.</p>
+
+<p><strong>Credentials do not travel.</strong> The transfer carries the shape of
+each destination and leaves its passwords and tokens behind, and the receiving
+device lists plainly what still needs a credential entering. A configuration
+file that quietly contained API keys would be the kind of convenience nobody
+asked for.</p>
+</section><section id='privacy' class='sec'><h2>What we can see</h2>
+<p>Nothing.</p>
+
+<p>There is no Manifest account, no Manifest cloud and no Manifest server. We do
+not receive your catalogue, your jobs, your photographs or your customers'
+signatures — not because we promise not to look, but because no such destination
+exists.</p>
+
+<ul>
+<li>What sits on the handset is <strong>encrypted at rest</strong>.</li>
+<li>A catalogue altered on its way to a handset is <strong>refused</strong> when
+it arrives.</li>
+<li>A plain export has stored credentials stripped out of it, so handing
+somebody your catalogue does not hand them your API keys.</li>
+<li>Studio will not run on a phone with no screen lock.</li>
+</ul>
+
+<p>The full detail, including what a job can contain when your form asks for a
+name or a signature, is in the <a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">privacy policy</a>.</p>
+</section><section id='pricing' class='chapter'><p class='eyebrow'>Price and scope</p><h1 class='chapter-h'>Price and scope</h1><p class='lede'>What it costs, what each tier includes, and what the app deliberately does not do.</p></section><section id='price' class='sec'><h2>One payment, no subscription</h2>
+<p>You buy it once and it keeps working — offline, in five years, and if we are
+hit by a bus. There is no renewal, no seat count to true up and nothing that
+stops working because a card expired.</p>
+
+<p><strong>Every paid tier has exactly the same features.</strong> The only
+thing that changes is how many handsets you can pair.</p>
+<div class='scroll'><table class='price'><thead><tr><th scope='col'>Tier</th><th scope='col'>Handsets you can pair</th><th scope='col'>One-time</th></tr></thead><tbody><tr><th scope='row'>Free</th><td>None — one device, for trying it out</td><td class='num'>Free</td></tr>
+<tr><th scope='row'>Solo</th><td>1</td><td class='num'>£20</td></tr>
+<tr><th scope='row'>Team</th><td>10</td><td class='num'>£70</td></tr>
+<tr><th scope='row'>Fleet</th><td>Any number</td><td class='num'>£150</td></tr>
+<tr><th scope='row'>Catalogue server</th><td>Add-on — requires Team or Fleet</td><td class='num'>£120</td></tr></tbody></table></div>
+<p>The handset app is <strong>free</strong>. You pay once, for Studio, on the
+single phone that authors the catalogue.</p>
+</section><section id='addon' class='sec'><h2>The catalogue server add-on</h2>
+<p>The <a href="#server">catalogue server</a> is bought separately and
+needs Team or Fleet, because it exists so that many handsets can pull a
+catalogue without somebody handing each one a file. At a single handset, the
+file is less work than a listening socket.</p>
+
+<p>It is a one-time purchase like everything else.</p>
+</section><section id='not' class='sec'><h2>What it deliberately is not</h2>
+<p>Being straight about this saves everybody a wasted evaluation.</p>
+
+<div class="scroll"><table>
+<thead><tr><th scope="col">Not</th><th scope="col">Why</th></tr></thead>
+<tbody>
+<tr><th scope="row">Stock control</th><td>Quantities are commercially sensitive
+and go stale the moment they leave the system that owns them</td></tr>
+<tr><th scope="row">Scheduling or dispatch</th><td>Seeing the work assigned to
+you and recording that it was done — yes. Planning who goes where next week —
+no</td></tr>
+<tr><th scope="row">A sync engine</th><td>Each device holds its own copy.
+Nothing silently merges behind your back</td></tr>
+<tr><th scope="row">Multi-user with accounts</th><td>There are no user accounts
+to administer. A device is the unit of identity</td></tr>
+<tr><th scope="row">An editor for everyone</th><td>Authoring is Studio's job, so
+the catalogue survives contact with a busy Friday</td></tr>
+</tbody></table></div>
+</section><section id='questions' class='chapter'><p class='eyebrow'>Questions</p><h1 class='chapter-h'>Questions</h1><p class='lede'>The things people reasonably want to know before installing anything.</p></section><section id='trying' class='sec'><h2>Can I try it before paying?</h2>
+<p>Yes. The free tier is a complete Studio on one device — author a catalogue,
+import your spreadsheet, print labels, record jobs. What it does not do is pair
+other handsets.</p>
+
+<p>So you can find out whether the app suits your business before spending
+anything, and the thing you pay for is putting it in other people's hands.</p>
+</section><section id='leaving' class='sec'><h2>What happens to my data if I stop using it?</h2>
+<p>You export it and keep it. A plain export is an ordinary readable document
+that any tool can open — deliberately, because a format only our software can
+read would be lock-in wearing a security badge.</p>
+
+<p>Nothing expires. You bought it once; it keeps working offline whatever
+happens to us.</p>
+</section><section id='internet' class='sec'><h2>Does it need the internet at all?</h2>
+<p>Only for three things, all optional: buying a tier, fetching a catalogue
+update from an address you configured, and sending completed jobs to a
+destination you configured.</p>
+
+<p>Everything else — the entire daily use of the app — happens on the handset.
+A business that hands catalogues around as files and keeps its job sheets on the
+phone never needs a connection at all.</p>
+</section><section id='size' class='sec'><h2>How big can a catalogue be?</h2>
+<p>Catalogues of several thousand parts are ordinary, and browsing and search
+are built to stay quick at that size rather than degrade politely. The practical
+limit is the phone's storage, and photographs use far more of it than the parts
+do.</p>
+</section><section id='existing' class='sec'><h2>I already have my parts in a spreadsheet</h2>
+<p>Good — that is the expected starting point.
+<a href="#spreadsheet">Import it</a>, correct the column mapping, and
+you have a catalogue. If the spreadsheet is a mess, use the
+<a href="#ai">AI conversion schema</a>: send it and your file to
+any AI assistant and it will produce something importable.</p>
+</section><section id='accounts' class='sec'><h2>How do I manage users?</h2>
+<p>You do not, because there are none. A device is the unit of identity: you
+pair a handset, and that handset can read your catalogues. There is no user
+directory, no password resets and no leavers process beyond
+<a href="#removing">removing the handset</a>.</p>
+
+<p>Jobs can still record who did the work, as a field on the form, because that
+is a fact about the job rather than a login.</p>
+</section><section id='android' class='sec'><h2>Is there an iPhone version?</h2>
+<p>Not today. Manifest and Manifest Studio are Android applications.</p>
+</section><section id='support' class='sec'><h2>Something is wrong, or I need a hand</h2>
+<p>Both apps carry a built-in guide, and Studio can report on the health of your
+catalogue. For anything else, the contact address is in the
+<a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">privacy policy</a>.</p>
+</section><section id='reference' class='chapter'><p class='eyebrow'>Reference</p><h1 class='chapter-h'>Reference</h1><p class='lede'>Every field type, and the words this guide uses.</p></section><section id='types' class='sec'><h2>Field types</h2>
+<p>All 44 types a field can be. Each one knows what it is, so the app offers the
+right control for entering it, the right way of showing it, and the right way of
+sorting it.</p>
+<div class='scroll'><table class='ref'><thead><tr><th scope='col'>Type</th><th scope='col'>What it holds</th></tr></thead><tbody><tr><th scope='row'><code>text</code></th><td>Free text over several lines.</td></tr>
+<tr><th scope='row'><code>string</code></th><td>A single line.</td></tr>
+<tr><th scope='row'><code>markdown</code></th><td>Formatted text — headings, bold, lists.</td></tr>
+<tr><th scope='row'><code>integer</code></th><td>A whole number.</td></tr>
+<tr><th scope='row'><code>decimal</code></th><td>A number with a fractional part.</td></tr>
+<tr><th scope='row'><code>fraction</code></th><td>Imperial fractions, kept as fractions rather than converted.</td></tr>
+<tr><th scope='row'><code>percent</code></th><td>A percentage.</td></tr>
+<tr><th scope='row'><code>range</code></th><td>A low and a high value — a tolerance, or a working range.</td></tr>
+<tr><th scope='row'><code>currency</code></th><td>An exact amount with its currency. Stored to the penny, never as a float.</td></tr>
+<tr><th scope='row'><code>dimensions</code></th><td>Length, width and height together, with units.</td></tr>
+<tr><th scope='row'><code>boolean</code></th><td>Yes, no, or not yet answered — three states, not two.</td></tr>
+<tr><th scope='row'><code>date</code></th><td>A calendar date, with a date picker.</td></tr>
+<tr><th scope='row'><code>time</code></th><td>A time of day.</td></tr>
+<tr><th scope='row'><code>datetime</code></th><td>A date and a time together.</td></tr>
+<tr><th scope='row'><code>dateRange</code></th><td>A start and an end — a hire period, a warranty.</td></tr>
+<tr><th scope='row'><code>yearMonth</code></th><td>A month and a year, for things dated no more finely than that.</td></tr>
+<tr><th scope='row'><code>duration</code></th><td>Hours and minutes. Entered in two boxes rather than typed as a code.</td></tr>
+<tr><th scope='row'><code>recurrence</code></th><td>How often something repeats — a service interval.</td></tr>
+<tr><th scope='row'><code>enum</code></th><td>One value from a list you define.</td></tr>
+<tr><th scope='row'><code>multiEnum</code></th><td>Any number of values from a list you define.</td></tr>
+<tr><th scope='row'><code>hierarchicalEnum</code></th><td>A list with a tree in it, where choosing narrows the next choice.</td></tr>
+<tr><th scope='row'><code>status</code></th><td>A state with a colour, so it reads at a glance.</td></tr>
+<tr><th scope='row'><code>tags</code></th><td>Free-form labels, reusable across the catalogue.</td></tr>
+<tr><th scope='row'><code>rating</code></th><td>A score out of a maximum you set.</td></tr>
+<tr><th scope='row'><code>colour</code></th><td>A colour, shown as a swatch.</td></tr>
+<tr><th scope='row'><code>email</code></th><td>An address, checked for shape and tappable to write to.</td></tr>
+<tr><th scope='row'><code>phone</code></th><td>A number, tappable to dial. Extensions are accepted.</td></tr>
+<tr><th scope='row'><code>url</code></th><td>A web address, tappable to open.</td></tr>
+<tr><th scope='row'><code>link</code></th><td>A web address with your own label on it.</td></tr>
+<tr><th scope='row'><code>person</code></th><td>A name — an engineer, a customer, a signatory.</td></tr>
+<tr><th scope='row'><code>address</code></th><td>A postal address in its proper parts, not one squashed line.</td></tr>
+<tr><th scope='row'><code>geoPoint</code></th><td>A latitude and longitude.</td></tr>
+<tr><th scope='row'><code>storageLocation</code></th><td>Where the thing physically lives — bay, shelf, van.</td></tr>
+<tr><th scope='row'><code>serial</code></th><td>A serial number, in a monospaced face so 0 and O differ.</td></tr>
+<tr><th scope='row'><code>barcode</code></th><td>A code that can be printed and scanned back.</td></tr>
+<tr><th scope='row'><code>nfcTag</code></th><td>An NFC tag identifier.</td></tr>
+<tr><th scope='row'><code>ref</code></th><td>A pointer to another part in the same catalogue.</td></tr>
+<tr><th scope='row'><code>image</code></th><td>A photograph.</td></tr>
+<tr><th scope='row'><code>file</code></th><td>An attached document — a datasheet, a certificate.</td></tr>
+<tr><th scope='row'><code>signature</code></th><td>A signature drawn on the glass. Once given it cannot be altered.</td></tr>
+<tr><th scope='row'><code>audio</code></th><td>A voice note, recorded through the phone's own recorder.</td></tr>
+<tr><th scope='row'><code>video</code></th><td>A clip, recorded through the phone's own camera app.</td></tr>
+<tr><th scope='row'><code>array</code></th><td>A repeating list of any of the above.</td></tr>
+<tr><th scope='row'><code>object</code></th><td>A group of fields treated as one thing.</td></tr></tbody></table></div></section><section id='glossary' class='sec'><h2>Glossary</h2>
+<div class="spec">
+  <div><p class="k">Catalogue</p><div class="v"><p>The document holding your
+  fields, structure, appearance and parts. The thing the app takes its shape
+  from.</p></div></div>
+  <div><p class="k">Part</p><div class="v"><p>One record. Depending on your
+  trade that is a stock line, a fitting, or one individually tracked
+  asset.</p></div></div>
+  <div><p class="k">Build</p><div class="v"><p>A group of parts treated as a
+  unit. You can call it a Kit, an Assembly or whatever your trade
+  says.</p></div></div>
+  <div><p class="k">Plan</p><div class="v"><p>A site drawing with zones marked
+  on it and parts placed in them.</p></div></div>
+  <div><p class="k">Job</p><div class="v"><p>One piece of recorded work, filled
+  in on a form you designed.</p></div></div>
+  <div><p class="k">Destination</p><div class="v"><p>Somewhere a completed job
+  is sent — a folder, a web address or an email address.</p></div></div>
+  <div><p class="k">Studio</p><div class="v"><p>The authoring app. One per
+  business, on the phone that owns the catalogue.</p></div></div>
+  <div><p class="k">Handset</p><div class="v"><p>A phone running the reading app,
+  paired to a Studio.</p></div></div>
+  <div><p class="k">Pairing</p><div class="v"><p>The face-to-face step that makes
+  a handset trust your Studio's catalogues.</p></div></div>
+  <div><p class="k">Recovery file</p><div class="v"><p>The encrypted file that
+  lets a replacement phone become your Studio.</p></div></div>
+</div>
+</section>
+<footer class="site-foot">
+<p><strong>Manifest</strong> and <strong>Manifest Studio</strong> are
+published by Lucas Potter (LPSD). Updated 1 September 2026.</p>
+<p><a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">Privacy policy</a></p>
+</footer>
+</main></div>
+</body>
+</html>

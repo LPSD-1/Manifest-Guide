@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference — Manifest guide</title>
+<meta name="description" content="Every field type, and the words this guide uses.">
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Manifest</span>
+      <span class="brand-sub">guide</span>
+    </a>
+    <div class="tools">
+      <label class="search" for="q">
+        <span class="vh">Search the guide</span>
+        <input id="q" type="search" placeholder="Search the guide" autocomplete="off"
+               spellcheck="false" aria-controls="results" aria-expanded="false">
+      </label>
+      <a class="dl" href="manifest-guide.html" download>Download</a>
+    </div>
+  </div>
+  <div id="results" class="results" role="region" aria-live="polite" hidden></div>
+</header>
+
+<div class="wrap shell">
+  <nav class="sidebar" aria-label="Guide"><ul class='nav-list'><li><a href="index.html">Overview</a></li><li><a href="start.html">Getting started</a></li><li><a href="catalogue.html">Your catalogue</a></li><li><a href="working.html">On the floor</a></li><li><a href="jobs.html">Jobs</a></li><li><a href="labels.html">Labels</a></li><li><a href="data.html">Getting data in and out</a></li><li><a href="safety.html">Fleet, backup and privacy</a></li><li><a href="pricing.html">Price and scope</a></li><li><a href="questions.html">Questions</a></li><li><a href="reference.html" aria-current="page">Reference</a></li></ul></nav>
+  <main id="main" class="content"><div class='page-head'><p class='eyebrow'>Reference</p><h1>Reference</h1><p class='lede'>Every field type, and the words this guide uses.</p></div>
+<nav class='toc' aria-label='On this page'><p class='toc-h'>On this page</p><ul><li><a href="#types">Field types</a></li><li><a href="#glossary">Glossary</a></li></ul></nav>
+<section id='types' class='sec'><h2><a class='anchor' href='#types'>Field types</a></h2>
+<p>All 44 types a field can be. Each one knows what it is, so the app offers the
+right control for entering it, the right way of showing it, and the right way of
+sorting it.</p>
+<div class='scroll'><table class='ref'><thead><tr><th scope='col'>Type</th><th scope='col'>What it holds</th></tr></thead><tbody><tr><th scope='row'><code>text</code></th><td>Free text over several lines.</td></tr>
+<tr><th scope='row'><code>string</code></th><td>A single line.</td></tr>
+<tr><th scope='row'><code>markdown</code></th><td>Formatted text — headings, bold, lists.</td></tr>
+<tr><th scope='row'><code>integer</code></th><td>A whole number.</td></tr>
+<tr><th scope='row'><code>decimal</code></th><td>A number with a fractional part.</td></tr>
+<tr><th scope='row'><code>fraction</code></th><td>Imperial fractions, kept as fractions rather than converted.</td></tr>
+<tr><th scope='row'><code>percent</code></th><td>A percentage.</td></tr>
+<tr><th scope='row'><code>range</code></th><td>A low and a high value — a tolerance, or a working range.</td></tr>
+<tr><th scope='row'><code>currency</code></th><td>An exact amount with its currency. Stored to the penny, never as a float.</td></tr>
+<tr><th scope='row'><code>dimensions</code></th><td>Length, width and height together, with units.</td></tr>
+<tr><th scope='row'><code>boolean</code></th><td>Yes, no, or not yet answered — three states, not two.</td></tr>
+<tr><th scope='row'><code>date</code></th><td>A calendar date, with a date picker.</td></tr>
+<tr><th scope='row'><code>time</code></th><td>A time of day.</td></tr>
+<tr><th scope='row'><code>datetime</code></th><td>A date and a time together.</td></tr>
+<tr><th scope='row'><code>dateRange</code></th><td>A start and an end — a hire period, a warranty.</td></tr>
+<tr><th scope='row'><code>yearMonth</code></th><td>A month and a year, for things dated no more finely than that.</td></tr>
+<tr><th scope='row'><code>duration</code></th><td>Hours and minutes. Entered in two boxes rather than typed as a code.</td></tr>
+<tr><th scope='row'><code>recurrence</code></th><td>How often something repeats — a service interval.</td></tr>
+<tr><th scope='row'><code>enum</code></th><td>One value from a list you define.</td></tr>
+<tr><th scope='row'><code>multiEnum</code></th><td>Any number of values from a list you define.</td></tr>
+<tr><th scope='row'><code>hierarchicalEnum</code></th><td>A list with a tree in it, where choosing narrows the next choice.</td></tr>
+<tr><th scope='row'><code>status</code></th><td>A state with a colour, so it reads at a glance.</td></tr>
+<tr><th scope='row'><code>tags</code></th><td>Free-form labels, reusable across the catalogue.</td></tr>
+<tr><th scope='row'><code>rating</code></th><td>A score out of a maximum you set.</td></tr>
+<tr><th scope='row'><code>colour</code></th><td>A colour, shown as a swatch.</td></tr>
+<tr><th scope='row'><code>email</code></th><td>An address, checked for shape and tappable to write to.</td></tr>
+<tr><th scope='row'><code>phone</code></th><td>A number, tappable to dial. Extensions are accepted.</td></tr>
+<tr><th scope='row'><code>url</code></th><td>A web address, tappable to open.</td></tr>
+<tr><th scope='row'><code>link</code></th><td>A web address with your own label on it.</td></tr>
+<tr><th scope='row'><code>person</code></th><td>A name — an engineer, a customer, a signatory.</td></tr>
+<tr><th scope='row'><code>address</code></th><td>A postal address in its proper parts, not one squashed line.</td></tr>
+<tr><th scope='row'><code>geoPoint</code></th><td>A latitude and longitude.</td></tr>
+<tr><th scope='row'><code>storageLocation</code></th><td>Where the thing physically lives — bay, shelf, van.</td></tr>
+<tr><th scope='row'><code>serial</code></th><td>A serial number, in a monospaced face so 0 and O differ.</td></tr>
+<tr><th scope='row'><code>barcode</code></th><td>A code that can be printed and scanned back.</td></tr>
+<tr><th scope='row'><code>nfcTag</code></th><td>An NFC tag identifier.</td></tr>
+<tr><th scope='row'><code>ref</code></th><td>A pointer to another part in the same catalogue.</td></tr>
+<tr><th scope='row'><code>image</code></th><td>A photograph.</td></tr>
+<tr><th scope='row'><code>file</code></th><td>An attached document — a datasheet, a certificate.</td></tr>
+<tr><th scope='row'><code>signature</code></th><td>A signature drawn on the glass. Once given it cannot be altered.</td></tr>
+<tr><th scope='row'><code>audio</code></th><td>A voice note, recorded through the phone's own recorder.</td></tr>
+<tr><th scope='row'><code>video</code></th><td>A clip, recorded through the phone's own camera app.</td></tr>
+<tr><th scope='row'><code>array</code></th><td>A repeating list of any of the above.</td></tr>
+<tr><th scope='row'><code>object</code></th><td>A group of fields treated as one thing.</td></tr></tbody></table></div></section>
+<section id='glossary' class='sec'><h2><a class='anchor' href='#glossary'>Glossary</a></h2>
+<div class="spec">
+  <div><p class="k">Catalogue</p><div class="v"><p>The document holding your
+  fields, structure, appearance and parts. The thing the app takes its shape
+  from.</p></div></div>
+  <div><p class="k">Part</p><div class="v"><p>One record. Depending on your
+  trade that is a stock line, a fitting, or one individually tracked
+  asset.</p></div></div>
+  <div><p class="k">Build</p><div class="v"><p>A group of parts treated as a
+  unit. You can call it a Kit, an Assembly or whatever your trade
+  says.</p></div></div>
+  <div><p class="k">Plan</p><div class="v"><p>A site drawing with zones marked
+  on it and parts placed in them.</p></div></div>
+  <div><p class="k">Job</p><div class="v"><p>One piece of recorded work, filled
+  in on a form you designed.</p></div></div>
+  <div><p class="k">Destination</p><div class="v"><p>Somewhere a completed job
+  is sent — a folder, a web address or an email address.</p></div></div>
+  <div><p class="k">Studio</p><div class="v"><p>The authoring app. One per
+  business, on the phone that owns the catalogue.</p></div></div>
+  <div><p class="k">Handset</p><div class="v"><p>A phone running the reading app,
+  paired to a Studio.</p></div></div>
+  <div><p class="k">Pairing</p><div class="v"><p>The face-to-face step that makes
+  a handset trust your Studio's catalogues.</p></div></div>
+  <div><p class="k">Recovery file</p><div class="v"><p>The encrypted file that
+  lets a replacement phone become your Studio.</p></div></div>
+</div>
+</section></main>
+</div>
+
+<footer class="wrap site-foot">
+  <p><strong>Manifest</strong> and <strong>Manifest Studio</strong> are
+  published by Lucas Potter (LPSD). Guide updated 1 September 2026.</p>
+  <p><a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">Privacy policy</a> · <a href="manifest-guide.html" download>Download this guide</a></p>
+</footer>
+
+<script src="assets/search-index.js"></script>
+<script src="assets/guide.js"></script>
+</body>
+</html>
