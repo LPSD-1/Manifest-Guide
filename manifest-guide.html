@@ -512,8 +512,8 @@ export.</p></div>
 </section><section id='jobs' class='chapter'><p class='eyebrow'>Jobs</p><h1 class='chapter-h'>Jobs</h1><p class='lede'>Designing job sheets, filling them in on site, and getting completed work off the handset.</p></section><section id='forms' class='sec'><h2>The job sheet is a form you designed</h2>
 <p>A job form is built from the same field types as the rest of the catalogue and
 lives in your catalogue. Most are offered on a job — a signature, a voice note, a
-video clip, a duration or an address as readily as a line of text. Three are not
-offered on a job yet: a photograph, a status with set steps, and a choice that
+video clip, a photograph, a duration or an address as readily as a line of text.
+Two are not offered on a job yet: a status with set steps, and a choice that
 narrows as you pick. A form that already carries one keeps working. Whatever your trade records — visit type, devices tested,
 defects found, outcome, next service date, invoice total — is a field you
 defined, not a box we guessed at.</p>
@@ -526,10 +526,11 @@ annual service and a callback can be different forms.</p>
   so time on site is recorded rather than remembered back at the van. It writes
   into a duration field you nominate, so put one on the form first, and it keeps
   running while the app is closed.</p></div></div>
+  <div><p class="k">Photographs</p><div class="v"><p>Taken on the spot with the
+  camera, or picked from the gallery, and stored on the handset with the
+  job.</p></div></div>
   <div><p class="k">Recordings</p><div class="v"><p>A voice note or a video clip,
-  through the phone's own recorder or camera app. Photographs are a
-  <strong>part</strong> field today rather than a job field; a job form cannot
-  yet ask for one.</p></div></div>
+  through the phone's own recorder or camera app.</p></div></div>
   <div><p class="k">Signatures</p><div class="v"><p>Captured on the glass. Once
   given, a signature cannot be quietly changed — which is the entire point of
   having one.</p></div></div>
@@ -932,8 +933,9 @@ catalogue. For anything else, the contact address is in the
 sorts it correctly, and most have a control for entering one. Two have no editor
 anywhere yet — <code>file</code> and <code>geoPoint</code>. <code>audio</code>
 and <code>video</code> can be filled in on a job but not on a part, and
-<code>signature</code> is a job field only. A catalogue that already carries any
-of these still shows and sorts them.</p>
+<code>signature</code> is a job field only, and <code>image</code> works on
+both. A catalogue that already carries any of these still shows and sorts
+them.</p>
 <div class='scroll'><table class='ref'><thead><tr><th scope='col'>Type</th><th scope='col'>What it holds</th></tr></thead><tbody><tr><th scope='row'><code>text</code></th><td>Free text over several lines.</td></tr>
 <tr><th scope='row'><code>string</code></th><td>A single line.</td></tr>
 <tr><th scope='row'><code>markdown</code></th><td>Formatted text — headings, bold, lists.</td></tr>
@@ -971,7 +973,7 @@ of these still shows and sorts them.</p>
 <tr><th scope='row'><code>barcode</code></th><td>A code that can be printed and scanned back.</td></tr>
 <tr><th scope='row'><code>nfcTag</code></th><td>An NFC tag identifier, stored and shown as text. The app does not read or write tags itself; the identifier is typed or scanned in.</td></tr>
 <tr><th scope='row'><code>ref</code></th><td>A pointer to another part in the same catalogue.</td></tr>
-<tr><th scope='row'><code>image</code></th><td>A photograph. Offered on a part; not yet on a job form.</td></tr>
+<tr><th scope='row'><code>image</code></th><td>A photograph, on a part or on a job.</td></tr>
 <tr><th scope='row'><code>file</code></th><td>An attached document — a datasheet, a certificate. No editor yet: a value has to arrive in an imported catalogue.</td></tr>
 <tr><th scope='row'><code>signature</code></th><td>A signature drawn on the glass, on a job. Once given it cannot be altered, and it is deliberately not a part field.</td></tr>
 <tr><th scope='row'><code>audio</code></th><td>A voice note, recorded through the phone's own recorder. Offered on a job; not yet on a part.</td></tr>
