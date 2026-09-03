@@ -33,9 +33,12 @@
   <main id="main" class="content"><div class='page-head'><p class='eyebrow'>Reference</p><h1>Reference</h1><p class='lede'>Every field type, and the words this guide uses.</p></div>
 <nav class='toc' aria-label='On this page'><p class='toc-h'>On this page</p><ul><li><a href="#types">Field types</a></li><li><a href="#glossary">Glossary</a></li></ul></nav>
 <section id='types' class='sec'><h2><a class='anchor' href='#types'>Field types</a></h2>
-<p>All 44 types a field can be. Each one knows what it is, so the app offers the
-right control for entering it, the right way of showing it, and the right way of
-sorting it.</p>
+<p>All 44 types a field can hold. Each knows what it is, so the app shows it and
+sorts it correctly, and most have a control for entering one. Two have no editor
+anywhere yet — <code>file</code> and <code>geoPoint</code>. <code>audio</code>
+and <code>video</code> can be filled in on a job but not on a part, and
+<code>signature</code> is a job field only. A catalogue that already carries any
+of these still shows and sorts them.</p>
 <div class='scroll'><table class='ref'><thead><tr><th scope='col'>Type</th><th scope='col'>What it holds</th></tr></thead><tbody><tr><th scope='row'><code>text</code></th><td>Free text over several lines.</td></tr>
 <tr><th scope='row'><code>string</code></th><td>A single line.</td></tr>
 <tr><th scope='row'><code>markdown</code></th><td>Formatted text — headings, bold, lists.</td></tr>
@@ -67,17 +70,17 @@ sorting it.</p>
 <tr><th scope='row'><code>link</code></th><td>A web address with your own label on it.</td></tr>
 <tr><th scope='row'><code>person</code></th><td>A name — an engineer, a customer, a signatory.</td></tr>
 <tr><th scope='row'><code>address</code></th><td>A postal address in its proper parts, not one squashed line.</td></tr>
-<tr><th scope='row'><code>geoPoint</code></th><td>A latitude and longitude.</td></tr>
+<tr><th scope='row'><code>geoPoint</code></th><td>A latitude and longitude. Shown and sorted; there is no map picker yet, so a value has to arrive in an imported catalogue.</td></tr>
 <tr><th scope='row'><code>storageLocation</code></th><td>Where the thing physically lives — bay, shelf, van.</td></tr>
 <tr><th scope='row'><code>serial</code></th><td>A serial number, in a monospaced face so 0 and O differ.</td></tr>
 <tr><th scope='row'><code>barcode</code></th><td>A code that can be printed and scanned back.</td></tr>
-<tr><th scope='row'><code>nfcTag</code></th><td>An NFC tag identifier.</td></tr>
+<tr><th scope='row'><code>nfcTag</code></th><td>An NFC tag identifier, stored and shown as text. The app does not read or write tags itself; the identifier is typed or scanned in.</td></tr>
 <tr><th scope='row'><code>ref</code></th><td>A pointer to another part in the same catalogue.</td></tr>
-<tr><th scope='row'><code>image</code></th><td>A photograph.</td></tr>
-<tr><th scope='row'><code>file</code></th><td>An attached document — a datasheet, a certificate.</td></tr>
-<tr><th scope='row'><code>signature</code></th><td>A signature drawn on the glass. Once given it cannot be altered.</td></tr>
-<tr><th scope='row'><code>audio</code></th><td>A voice note, recorded through the phone's own recorder.</td></tr>
-<tr><th scope='row'><code>video</code></th><td>A clip, recorded through the phone's own camera app.</td></tr>
+<tr><th scope='row'><code>image</code></th><td>A photograph. Offered on a part; not yet on a job form.</td></tr>
+<tr><th scope='row'><code>file</code></th><td>An attached document — a datasheet, a certificate. No editor yet: a value has to arrive in an imported catalogue.</td></tr>
+<tr><th scope='row'><code>signature</code></th><td>A signature drawn on the glass, on a job. Once given it cannot be altered, and it is deliberately not a part field.</td></tr>
+<tr><th scope='row'><code>audio</code></th><td>A voice note, recorded through the phone's own recorder. Offered on a job; not yet on a part.</td></tr>
+<tr><th scope='row'><code>video</code></th><td>A clip, recorded through the phone's own camera app. Offered on a job; not yet on a part.</td></tr>
 <tr><th scope='row'><code>array</code></th><td>A repeating list of any of the above.</td></tr>
 <tr><th scope='row'><code>object</code></th><td>A group of fields treated as one thing.</td></tr></tbody></table></div></section>
 <section id='glossary' class='sec'><h2><a class='anchor' href='#glossary'>Glossary</a></h2>
@@ -111,7 +114,7 @@ sorting it.</p>
 
 <footer class="wrap site-foot">
   <p><strong>Manifest</strong> and <strong>Manifest Studio</strong> are
-  published by Lucas Potter (LPSD). Guide updated 1 September 2026.</p>
+  published by Lucas Potter (LPSD). Guide updated 3 September 2026.</p>
   <p><a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">Privacy policy</a> · <a href="manifest-guide.html" download>Download this guide</a></p>
 </footer>
 

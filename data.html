@@ -55,8 +55,11 @@ up.</p>
 <thead><tr><th scope="col">Route</th><th scope="col">What it means</th></tr></thead>
 <tbody>
 <tr><th scope="row">Plain export</th><td>An ordinary readable file. Your data,
-yours to keep, openable by anything. Any stored credentials are stripped out of
-it</td></tr>
+yours to keep, openable by anything. Stored credentials — passwords, keys,
+tokens — are stripped out of it. <strong>A secret written into an address
+cannot be</strong>: for a webhook the address <em>is</em> the credential, so a
+destination URL travels as it stands. Studio says so where you author
+one</td></tr>
 <tr><th scope="row">Sealed export</th><td>Encrypted to the specific handsets you
 name. Only those devices can open it</td></tr>
 <tr><th scope="row">Bundle</th><td>The catalogue together with its photographs
@@ -78,9 +81,9 @@ badge.</p></div>
 program for <strong>Windows, Linux or a Raspberry Pi</strong>, together with its
 configuration and its key.</p>
 
-<p>Put it on a machine in your building, and every handset picks up catalogue
-updates over your own network — no web host, no hosting bill, nothing exposed to
-the internet.</p>
+<p>Put it on a machine in your building, and every handset is offered new
+catalogues over your own network the next time the app is opened on it — no web
+host, no hosting bill, nothing exposed to the internet.</p>
 
 <h3>What it does and refuses</h3>
 <ul>
@@ -95,14 +98,16 @@ no certificate to buy.</li>
 </ul>
 
 <p>Once bought, <em>Export catalogue server</em> appears in Studio under
-Settings ▸ Catalogue. Before it is bought the row is absent rather than greyed
+Menu ▸ Catalogue. Before it is bought the row is absent rather than greyed
 out, because a permanently dead control is an advertisement wearing a control's
 clothes.</p>
 </section>
 <section id='updates' class='sec'><h2><a class='anchor' href='#updates'>Catalogue updates</a></h2>
 <p>A catalogue can name an address it updates from — your catalogue server, or
-any https address you control. Handsets check on their own, at an interval you
-set, no more often than every fifteen minutes.</p>
+any https address you control. Handsets check on their own — but only when
+somebody opens the app. Nothing runs in the background, so a phone left in a
+drawer stays on the catalogue it has until it is next opened. Checking more
+often than every fifteen minutes is ignored.</p>
 
 <div class="note"><p><strong>An update is offered, never applied behind
 somebody's back.</strong> A fetched catalogue goes through the same preview,
@@ -116,7 +121,7 @@ refused, and the message says who has to act.</p>
 
 <footer class="wrap site-foot">
   <p><strong>Manifest</strong> and <strong>Manifest Studio</strong> are
-  published by Lucas Potter (LPSD). Guide updated 1 September 2026.</p>
+  published by Lucas Potter (LPSD). Guide updated 3 September 2026.</p>
   <p><a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">Privacy policy</a> · <a href="manifest-guide.html" download>Download this guide</a></p>
 </footer>
 

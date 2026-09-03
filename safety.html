@@ -33,9 +33,11 @@
   <main id="main" class="content"><div class='page-head'><p class='eyebrow'>Fleet, backup and privacy</p><h1>Fleet, backup and privacy</h1><p class='lede'>Pairing handsets, the recovery file, and what we can and cannot see.</p></div>
 <nav class='toc' aria-label='On this page'><p class='toc-h'>On this page</p><ul><li><a href="#pairing">Pairing handsets</a></li><li><a href="#recovery">The recovery file</a></li><li><a href="#removing">Removing a handset</a></li><li><a href="#transfer">Copying settings to another device</a></li><li><a href="#privacy">What we can see</a></li></ul></nav>
 <section id='pairing' class='sec'><h2><a class='anchor' href='#pairing'>Pairing handsets</a></h2>
-<p>Handsets are paired to a Studio face to face. Each device shows a code, you
-check they match, and from then on that handset trusts catalogues that Studio
-has signed.</p>
+<p>Handsets are paired to a Studio in person or over a phone line. Each device
+shows a code, and you confirm the fingerprint matches — reading it out loud to
+whoever is holding the other handset is enough. That check is the only thing
+proving the request came from the device you think it did. From then on that
+handset trusts catalogues that Studio has signed.</p>
 
 <p>Checking the code is the step that matters: it is the only thing proving the
 request came from the device in front of you, rather than from somebody else
@@ -48,8 +50,12 @@ a second slot from your allowance.</p>
 <section id='recovery' class='sec'><h2><a class='anchor' href='#recovery'>The recovery file</a></h2>
 <p>A phone is a thing that gets dropped, stolen and left on a roof. So Studio
 writes a <strong>recovery file</strong>: one encrypted file holding your Studio
-identity, your catalogue and the key your fleet trusts — including the
-photographs and signatures attached to jobs.</p>
+identity, your catalogue, the key your fleet trusts, and the photographs and
+signatures attached to jobs. <strong>The catalogue's own part photographs are
+deliberately not in it</strong> — packing every part image into one envelope
+makes a file too large to be worth having. They travel in a catalogue
+<strong>bundle</strong> instead, so keep a bundle beside the recovery file and
+between them everything is covered.</p>
 
 <p>Restore it on a new phone and that phone <strong>is</strong> your Studio. The
 handsets you already paired carry on working, with nothing to redo at their
@@ -74,14 +80,20 @@ already holds, for ever. There is no way to reach it and no server to tell it
 otherwise. What removal does is take it off the list, so nothing you seal
 <em>from now on</em> can be opened by it.</p></div>
 
-<p>If a handset is genuinely lost or in the wrong hands, the honest answer is
-<strong>Remove and re-key</strong>: a new fleet key is created and wrapped for
-the handsets still paired, so future catalogues are readable by them and not by
-the missing device.</p>
+<p>If a handset is genuinely lost or in the wrong hands, <strong>take it off
+the list</strong>. That is the step that matters: a sealed export names the
+handsets paired at the moment it is written, so the missing device is not a
+recipient of anything you seal afterwards.</p>
 
-<p>Re-keying does not by itself stop anything already on that phone being read.
-Nothing can, once a file is on a device you cannot reach — and an app claiming
-otherwise would be lying to you.</p>
+<p><strong>Remove and re-key</strong> mints a new fleet key and writes a file
+wrapping it for the handsets you keep. Be clear about what that does today:
+<em>no handset can load such a file yet</em>, so on its own a re-key shuts
+nothing out — keep the file with your backups against the day it can. Removal
+from the list is what changes who can open what.</p>
+
+<p>And nothing stops what is already on that phone being read. Once a file is on
+a device you cannot reach, no app can reach back — one claiming otherwise would
+be lying to you.</p>
 </section>
 <section id='transfer' class='sec'><h2><a class='anchor' href='#transfer'>Copying settings to another device</a></h2>
 <p>Destination and source settings can be copied from one device to another —
@@ -103,11 +115,15 @@ signatures — not because we promise not to look, but because no such destinati
 exists.</p>
 
 <ul>
-<li>What sits on the handset is <strong>encrypted at rest</strong>.</li>
-<li>A catalogue altered on its way to a handset is <strong>refused</strong> when
-it arrives.</li>
+<li>The database <strong>and the photographs</strong> on the handset are
+encrypted at rest, with the key held in the phone's own secure hardware.</li>
+<li>A catalogue that was not signed by your Studio, or was altered on its way,
+is <strong>refused</strong> by a paired handset. Studio authors catalogues, so
+its own imports are not held to a signature.</li>
 <li>A plain export has stored credentials stripped out of it, so handing
-somebody your catalogue does not hand them your API keys.</li>
+somebody your catalogue does not hand them your API keys. The exception is a
+secret written into a destination's address, which cannot be removed without
+breaking the address — Studio warns you where you author one.</li>
 <li>Studio will not run on a phone with no screen lock.</li>
 </ul>
 
@@ -118,7 +134,7 @@ name or a signature, is in the <a href="https://lpsd-1.github.io/Manifest-Privac
 
 <footer class="wrap site-foot">
   <p><strong>Manifest</strong> and <strong>Manifest Studio</strong> are
-  published by Lucas Potter (LPSD). Guide updated 1 September 2026.</p>
+  published by Lucas Potter (LPSD). Guide updated 3 September 2026.</p>
   <p><a href="https://lpsd-1.github.io/Manifest-Privacy-Policy/">Privacy policy</a> · <a href="manifest-guide.html" download>Download this guide</a></p>
 </footer>
 

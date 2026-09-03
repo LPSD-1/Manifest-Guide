@@ -50,17 +50,17 @@ FIELD_TYPES = [
     ("link", "A web address with your own label on it."),
     ("person", "A name — an engineer, a customer, a signatory."),
     ("address", "A postal address in its proper parts, not one squashed line."),
-    ("geoPoint", "A latitude and longitude."),
+    ("geoPoint", "A latitude and longitude. Shown and sorted; there is no map picker yet, so a value has to arrive in an imported catalogue."),
     ("storageLocation", "Where the thing physically lives — bay, shelf, van."),
     ("serial", "A serial number, in a monospaced face so 0 and O differ."),
     ("barcode", "A code that can be printed and scanned back."),
-    ("nfcTag", "An NFC tag identifier."),
+    ("nfcTag", "An NFC tag identifier, stored and shown as text. The app does not read or write tags itself; the identifier is typed or scanned in."),
     ("ref", "A pointer to another part in the same catalogue."),
-    ("image", "A photograph."),
-    ("file", "An attached document — a datasheet, a certificate."),
-    ("signature", "A signature drawn on the glass. Once given it cannot be altered."),
-    ("audio", "A voice note, recorded through the phone's own recorder."),
-    ("video", "A clip, recorded through the phone's own camera app."),
+    ("image", "A photograph. Offered on a part; not yet on a job form."),
+    ("file", "An attached document — a datasheet, a certificate. No editor yet: a value has to arrive in an imported catalogue."),
+    ("signature", "A signature drawn on the glass, on a job. Once given it cannot be altered, and it is deliberately not a part field."),
+    ("audio", "A voice note, recorded through the phone's own recorder. Offered on a job; not yet on a part."),
+    ("video", "A clip, recorded through the phone's own camera app. Offered on a job; not yet on a part."),
     ("array", "A repeating list of any of the above."),
     ("object", "A group of fields treated as one thing."),
 ]
@@ -171,7 +171,8 @@ on — it is the normal state.</p>
 signature: all of it happens on the handset with nothing to reach. There is no
 spinner waiting on a server, because there is no server. Where something
 genuinely needs a network — fetching a catalogue update, sending a finished
-job — it says so, and waits until there is one.</p>
+job — it says so, and holds the work until there is one. It tries again the next
+time somebody opens the app; nothing runs while the phone is in a pocket.</p>
 """,
             },
             {
@@ -257,7 +258,8 @@ top of it.</li>
 <li>Install <strong>Manifest</strong> on a second handset and
 <a href="safety.html#pairing">pair it</a>.</li>
 <li>Write your <a href="safety.html#recovery">recovery file</a> before you have
-anything you would miss.</li>
+anything you would miss. Writing one is paid, because it takes your catalogue off
+the handset; checking and restoring one are free on every tier.</li>
 </ol>
 
 <div class="warn"><p>Step six is the one people skip. A handset is a thing that
@@ -283,7 +285,8 @@ duration gets hours and minutes, money is stored as an exact amount with its
 currency rather than a rounded number, a phone number dials, and a link opens.</p>
 
 <p>For each field you decide the label, whether it is required, whether it is
-searchable and how heavily it is weighted, where it appears on the part page,
+searchable and how heavily it is weighted against other fields at the same rank,
+where it appears on the part page,
 and any bounds it must respect.</p>
 
 <p>The full list is in the <a href="reference.html#types">field type
@@ -299,8 +302,10 @@ location, by rating, by whatever your trade actually uses to find things. A
 catalogue can be browsed on more than one axis at once, so the same stock can be
 reached by category and by where it lives.</p>
 
-<p>Filters you use constantly can be pinned, so they survive moving around the
-app instead of needing to be set again each time.</p>
+<p>Tapping a value on a part page — a manufacturer, a rating, a tag — narrows the
+list to everything sharing it, and shows as a chip you can remove. Sections are
+the durable version of the same idea: they come from a field's values, so the
+catalogue organises itself and there is no second structure to keep in step.</p>
 """,
             },
             {
@@ -379,8 +384,7 @@ face so <code>0</code> and <code>O</code> cannot be confused when you are
 ordering one.</p>
 
 <p>A part page shows every field you defined, in the order and grouping you
-chose, with photographs, attached datasheets and any references to other
-parts.</p>
+chose, with photographs and any references to other parts.</p>
 """,
             },
             {
@@ -390,8 +394,11 @@ parts.</p>
 <p>Every area has a search bar, and it sits within thumb reach rather than at
 the top of the screen where a one-handed grip cannot get to it.</p>
 
-<p>Search covers the fields you marked searchable, weighted the way you asked —
-a part number ought to beat a description. Results appear as you type.</p>
+<p>Search covers the fields you marked searchable. Identifiers rank first — an
+exact match, then a match at the start, then one anywhere inside — and
+descriptions and other fields come after those. A weight you set breaks ties
+within one of those bands. Results appear as you type, and a row says which field
+matched.</p>
 """,
             },
             {
@@ -441,11 +448,11 @@ labelling it one part at a time.</p>
             },
             {
                 "id": "photos",
-                "heading": "Photographs and attachments",
+                "heading": "Photographs",
                 "body": """
-<p>A part can carry photographs taken with the phone, and attached documents —
-a datasheet, a certificate, a wiring diagram. They travel with the catalogue in
-a bundle, so a handset with no signal still has the drawing.</p>
+<p>A part can carry photographs, taken with the phone or picked from the
+gallery. They are compressed on the way in and travel with the catalogue in a
+bundle, so a handset with no signal still has the picture.</p>
 
 <p>Parts can also point at other parts, so a fitting can name what it fits and
 you can move between them.</p>
@@ -477,8 +484,11 @@ export.</p></div>
                 "id": "forms",
                 "heading": "The job sheet is a form you designed",
                 "body": """
-<p>A job form is made of the same 44 field types as everything else and lives in
-your catalogue. Whatever your trade records — visit type, devices tested,
+<p>A job form is built from the same field types as the rest of the catalogue and
+lives in your catalogue. Most are offered on a job — a signature, a voice note, a
+video clip, a duration or an address as readily as a line of text. Three are not
+offered on a job yet: a photograph, a status with set steps, and a choice that
+narrows as you pick. A form that already carries one keeps working. Whatever your trade records — visit type, devices tested,
 defects found, outcome, next service date, invoice total — is a field you
 defined, not a box we guessed at.</p>
 
@@ -492,9 +502,13 @@ annual service and a callback can be different forms.</p>
                 "body": """
 <div class="spec">
   <div><p class="k">Time</p><div class="v"><p>A timer runs while the work does,
-  so time on site is recorded rather than remembered back at the van.</p></div></div>
-  <div><p class="k">Photographs</p><div class="v"><p>Taken on the spot and
-  attached to the job.</p></div></div>
+  so time on site is recorded rather than remembered back at the van. It writes
+  into a duration field you nominate, so put one on the form first, and it keeps
+  running while the app is closed.</p></div></div>
+  <div><p class="k">Recordings</p><div class="v"><p>A voice note or a video clip,
+  through the phone's own recorder or camera app. Photographs are a
+  <strong>part</strong> field today rather than a job field; a job form cannot
+  yet ask for one.</p></div></div>
   <div><p class="k">Signatures</p><div class="v"><p>Captured on the glass. Once
   given, a signature cannot be quietly changed — which is the entire point of
   having one.</p></div></div>
@@ -525,15 +539,20 @@ bin and stay recoverable for seven days.</p>
                 "body": """
 <p>A finished job can be sent automatically, to as many destinations as you
 like. You configure these once in Studio and they travel to the fleet with the
-catalogue, arriving switched off until somebody turns them on.</p>
+catalogue, arriving <strong>working</strong> — switched on as you left them,
+with no step at the far end, so handsets begin sending as soon as they load the
+catalogue. If you want to try one van first, narrow the destination to named
+handsets before you publish.</p>
 
 <div class="scroll"><table>
 <thead><tr><th scope="col">Destination</th><th scope="col">What it is for</th></tr></thead>
 <tbody>
-<tr><th scope="row">A folder</th><td>A shared drive or a watched folder. The one
-route that needs no connectivity at all — the file is written the moment the job
-is done. You choose the folder from the phone's own file picker, and the
-permission is kept so it survives a restart</td></tr>
+<tr><th scope="row">A folder</th><td>A shared drive or a watched folder,
+<strong>on the Studio only</strong>. The folder permission belongs to the device
+that chose the folder, so engineers' handsets skip a folder destination rather
+than queueing work they could never deliver — the app says so where you pick it.
+It needs no connectivity at all. Handsets send over a web address or by
+email</td></tr>
 <tr><th scope="row">A web address</th><td>Your own system, your CRM, a webhook.
 Choose the body format and map your fields to whatever names the far end
 expects</td></tr>
@@ -606,8 +625,10 @@ long before the personal details in them are <strong>anonymised</strong>.
 Anonymising always comes before deleting, so a record can lose the customer's
 name and signature while the engineering facts stay.</p>
 
-<p>Leave either empty and nothing happens on that schedule. Deleted jobs sit in
-a bin for seven days before they go for good.</p>
+<p>Leave either empty and nothing happens on that schedule.
+<strong>Retention deletes for good — it is not the seven-day bin.</strong> The
+bin is for jobs somebody deletes by hand, which stay recoverable for seven
+days.</p>
 
 <div class="note"><p>The clock does not run on work that has not been sent yet.
 A job waiting for a destination is not quietly deleted out from under you
@@ -618,10 +639,13 @@ because a retention period elapsed.</p></div>
                 "id": "inbound",
                 "heading": "Work arriving from elsewhere",
                 "body": """
-<p>Jobs can travel the other way. Point the app at a dispatch list — your own
-system, a shared file — and the day's work appears on the right handset, routed
-by whatever rule the source specifies. Fetching again reconciles the list rather
-than duplicating it.</p>
+<p>Jobs can travel the other way. Point the app at an <strong>https address you
+control</strong> — your own scheduler or dispatch board — and each handset gets a
+<strong>Fetch</strong> row on its Jobs tab that brings down what has been
+assigned to it. It checks when that tab is opened; nothing polls in the
+background. Fetching again reconciles the list rather than duplicating it. The
+address, the credential and whatever comes back are yours; we never see any of
+it.</p>
 """,
             },
         ],
@@ -641,14 +665,16 @@ asset, and scanning it later opens that exact record.</p>
 
 <p>Select any number of parts — a whole zone at once, if you like — choose your
 stock, and Manifest lays out the sheet and renders a PDF. It tells you how many
-labels, how many to a page and how many pages before it prints anything.</p>
+labels, how many to a page and how many pages before it prints anything. A part
+with no part number has no code to print, so it is left out — and you are told
+how many, before any paper is spent.</p>
 """,
             },
             {
                 "id": "stocks",
                 "heading": "Label stocks",
                 "body": """
-<p>Manifest knows the layout of <strong>28 label stocks</strong>:</p>
+<p>Manifest knows the layout of <strong>34 label stocks</strong>:</p>
 
 <ul>
 <li><strong>Plain paper</strong> — A4, A5 and Letter.</li>
@@ -703,8 +729,11 @@ up.</p>
 <thead><tr><th scope="col">Route</th><th scope="col">What it means</th></tr></thead>
 <tbody>
 <tr><th scope="row">Plain export</th><td>An ordinary readable file. Your data,
-yours to keep, openable by anything. Any stored credentials are stripped out of
-it</td></tr>
+yours to keep, openable by anything. Stored credentials — passwords, keys,
+tokens — are stripped out of it. <strong>A secret written into an address
+cannot be</strong>: for a webhook the address <em>is</em> the credential, so a
+destination URL travels as it stands. Studio says so where you author
+one</td></tr>
 <tr><th scope="row">Sealed export</th><td>Encrypted to the specific handsets you
 name. Only those devices can open it</td></tr>
 <tr><th scope="row">Bundle</th><td>The catalogue together with its photographs
@@ -730,9 +759,9 @@ badge.</p></div>
 program for <strong>Windows, Linux or a Raspberry Pi</strong>, together with its
 configuration and its key.</p>
 
-<p>Put it on a machine in your building, and every handset picks up catalogue
-updates over your own network — no web host, no hosting bill, nothing exposed to
-the internet.</p>
+<p>Put it on a machine in your building, and every handset is offered new
+catalogues over your own network the next time the app is opened on it — no web
+host, no hosting bill, nothing exposed to the internet.</p>
 
 <h3>What it does and refuses</h3>
 <ul>
@@ -747,7 +776,7 @@ no certificate to buy.</li>
 </ul>
 
 <p>Once bought, <em>Export catalogue server</em> appears in Studio under
-Settings ▸ Catalogue. Before it is bought the row is absent rather than greyed
+Menu ▸ Catalogue. Before it is bought the row is absent rather than greyed
 out, because a permanently dead control is an advertisement wearing a control's
 clothes.</p>
 """,
@@ -757,8 +786,10 @@ clothes.</p>
                 "heading": "Catalogue updates",
                 "body": """
 <p>A catalogue can name an address it updates from — your catalogue server, or
-any https address you control. Handsets check on their own, at an interval you
-set, no more often than every fifteen minutes.</p>
+any https address you control. Handsets check on their own — but only when
+somebody opens the app. Nothing runs in the background, so a phone left in a
+drawer stays on the catalogue it has until it is next opened. Checking more
+often than every fifteen minutes is ignored.</p>
 
 <div class="note"><p><strong>An update is offered, never applied behind
 somebody's back.</strong> A fetched catalogue goes through the same preview,
@@ -781,9 +812,11 @@ refused, and the message says who has to act.</p>
                 "id": "pairing",
                 "heading": "Pairing handsets",
                 "body": """
-<p>Handsets are paired to a Studio face to face. Each device shows a code, you
-check they match, and from then on that handset trusts catalogues that Studio
-has signed.</p>
+<p>Handsets are paired to a Studio in person or over a phone line. Each device
+shows a code, and you confirm the fingerprint matches — reading it out loud to
+whoever is holding the other handset is enough. That check is the only thing
+proving the request came from the device you think it did. From then on that
+handset trusts catalogues that Studio has signed.</p>
 
 <p>Checking the code is the step that matters: it is the only thing proving the
 request came from the device in front of you, rather than from somebody else
@@ -800,8 +833,12 @@ a second slot from your allowance.</p>
                 "body": """
 <p>A phone is a thing that gets dropped, stolen and left on a roof. So Studio
 writes a <strong>recovery file</strong>: one encrypted file holding your Studio
-identity, your catalogue and the key your fleet trusts — including the
-photographs and signatures attached to jobs.</p>
+identity, your catalogue, the key your fleet trusts, and the photographs and
+signatures attached to jobs. <strong>The catalogue's own part photographs are
+deliberately not in it</strong> — packing every part image into one envelope
+makes a file too large to be worth having. They travel in a catalogue
+<strong>bundle</strong> instead, so keep a bundle beside the recovery file and
+between them everything is covered.</p>
 
 <p>Restore it on a new phone and that phone <strong>is</strong> your Studio. The
 handsets you already paired carry on working, with nothing to redo at their
@@ -830,14 +867,20 @@ already holds, for ever. There is no way to reach it and no server to tell it
 otherwise. What removal does is take it off the list, so nothing you seal
 <em>from now on</em> can be opened by it.</p></div>
 
-<p>If a handset is genuinely lost or in the wrong hands, the honest answer is
-<strong>Remove and re-key</strong>: a new fleet key is created and wrapped for
-the handsets still paired, so future catalogues are readable by them and not by
-the missing device.</p>
+<p>If a handset is genuinely lost or in the wrong hands, <strong>take it off
+the list</strong>. That is the step that matters: a sealed export names the
+handsets paired at the moment it is written, so the missing device is not a
+recipient of anything you seal afterwards.</p>
 
-<p>Re-keying does not by itself stop anything already on that phone being read.
-Nothing can, once a file is on a device you cannot reach — and an app claiming
-otherwise would be lying to you.</p>
+<p><strong>Remove and re-key</strong> mints a new fleet key and writes a file
+wrapping it for the handsets you keep. Be clear about what that does today:
+<em>no handset can load such a file yet</em>, so on its own a re-key shuts
+nothing out — keep the file with your backups against the day it can. Removal
+from the list is what changes who can open what.</p>
+
+<p>And nothing stops what is already on that phone being read. Once a file is on
+a device you cannot reach, no app can reach back — one claiming otherwise would
+be lying to you.</p>
 """,
             },
             {
@@ -867,11 +910,15 @@ signatures — not because we promise not to look, but because no such destinati
 exists.</p>
 
 <ul>
-<li>What sits on the handset is <strong>encrypted at rest</strong>.</li>
-<li>A catalogue altered on its way to a handset is <strong>refused</strong> when
-it arrives.</li>
+<li>The database <strong>and the photographs</strong> on the handset are
+encrypted at rest, with the key held in the phone's own secure hardware.</li>
+<li>A catalogue that was not signed by your Studio, or was altered on its way,
+is <strong>refused</strong> by a paired handset. Studio authors catalogues, so
+its own imports are not held to a signature.</li>
 <li>A plain export has stored credentials stripped out of it, so handing
-somebody your catalogue does not hand them your API keys.</li>
+somebody your catalogue does not hand them your API keys. The exception is a
+secret written into a destination's address, which cannot be removed without
+breaking the address — Studio warns you where you author one.</li>
 <li>Studio will not run on a phone with no screen lock.</li>
 </ul>
 
@@ -895,8 +942,13 @@ name or a signature, is in the <a href="%POLICY%">privacy policy</a>.</p>
 hit by a bus. There is no renewal, no seat count to true up and nothing that
 stops working because a card expired.</p>
 
-<p><strong>Every paid tier has exactly the same features.</strong> The only
-thing that changes is how many handsets you can pair.</p>
+<p><strong>Every paid tier carries the full feature set.</strong> What changes
+is how many handsets you can pair — and one other thing: the catalogue server
+add-on can only be bought on Team or Fleet.</p>
+
+<p>Play has no upgrade path for a one-time purchase, so moving from Solo to Team
+later means paying for Team rather than the difference. Worth knowing before you
+choose.</p>
 """
                 + tier_table()
                 + """
@@ -952,8 +1004,13 @@ the catalogue survives contact with a busy Friday</td></tr>
                 "heading": "Can I try it before paying?",
                 "body": """
 <p>Yes. The free tier is a complete Studio on one device — author a catalogue,
-import your spreadsheet, print labels, record jobs. What it does not do is pair
-other handsets.</p>
+import your spreadsheet, design job forms, record jobs and preview a label
+sheet. Four things are paid, and they are the ones that take your work off the
+handset: <strong>pairing</strong> other handsets, <strong>writing a recovery
+file</strong>, <strong>sealing</strong> an export, and <strong>saving a label
+sheet as a PDF</strong>. Checking and restoring a recovery file are free on
+every tier, always — the moment you need a backup is the moment you have
+least.</p>
 
 <p>So you can find out whether the app suits your business before spending
 anything, and the thing you pay for is putting it in other people's hands.</p>
@@ -1046,9 +1103,12 @@ catalogue. For anything else, the contact address is in the
                 "id": "types",
                 "heading": "Field types",
                 "body": """
-<p>All 44 types a field can be. Each one knows what it is, so the app offers the
-right control for entering it, the right way of showing it, and the right way of
-sorting it.</p>
+<p>All 44 types a field can hold. Each knows what it is, so the app shows it and
+sorts it correctly, and most have a control for entering one. Two have no editor
+anywhere yet — <code>file</code> and <code>geoPoint</code>. <code>audio</code>
+and <code>video</code> can be filled in on a job but not on a part, and
+<code>signature</code> is a job field only. A catalogue that already carries any
+of these still shows and sorts them.</p>
 """
                 + field_type_table(),
             },
