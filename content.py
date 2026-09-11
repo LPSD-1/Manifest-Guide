@@ -66,11 +66,13 @@ FIELD_TYPES = [
 ]
 
 TIERS = [
-    ("Free", "None — one device, for trying it out", "Free"),
+    ("Free", "None — Studio alone, on one device", "Free"),
     ("Solo", "1", "£20"),
-    ("Team", "10", "£70"),
-    ("Fleet", "Any number", "£150"),
-    ("Catalogue server", "Add-on — requires Team or Fleet", "£120"),
+    ("Team", "5", "£70"),
+    ("Company", "10", "£150"),
+    ("Handset packs", "Add-ons — more handsets on Company, and they add up", "from £70"),
+    ("Catalogue server", "Add-on — any paid tier", "£120"),
+    ("Service reports", "Add-on — any paid tier", "£20"),
 ]
 
 SAMPLES = [
@@ -256,7 +258,9 @@ top of it.</li>
 <li>Set your <a href="catalogue.html#look">colours and logo</a> and your
 <a href="catalogue.html#words">own words</a> for the sections.</li>
 <li>Install <strong>Manifest</strong> on a second handset and
-<a href="safety.html#pairing">pair it</a>.</li>
+<a href="safety.html#pairing">pair it</a> — during your trial, or on any paid
+tier. Free Studio works on its own, so you can leave this step until you have
+somebody to hand a handset to.</li>
 <li>Write your <a href="safety.html#recovery">recovery file</a> before you have
 anything you would miss. Writing one is paid, because it takes your catalogue off
 the handset; checking and restoring one are free on every tier.</li>
@@ -756,7 +760,7 @@ badge.</p></div>
                 "id": "server",
                 "heading": "The catalogue server",
                 "body": """
-<p>An optional extra for larger fleets. Studio exports a small, ready-to-run
+<p>An optional extra, on any paid tier. Studio exports a small, ready-to-run
 program for <strong>Windows, Linux or a Raspberry Pi</strong>, together with its
 configuration and its key.</p>
 
@@ -806,7 +810,7 @@ refused, and the message says who has to act.</p>
     # ----------------------------------------------------------------- safety
     {
         "slug": "safety",
-        "title": "Fleet, backup and privacy",
+        "title": "Handsets, backup and privacy",
         "blurb": "Pairing handsets, the recovery file, and what we can and cannot see.",
         "sections": [
             {
@@ -944,29 +948,57 @@ hit by a bus. There is no renewal, no seat count to true up and nothing that
 stops working because a card expired.</p>
 
 <p><strong>Every paid tier carries the full feature set.</strong> What changes
-is how many handsets you can pair — and one other thing: the catalogue server
-add-on can only be bought on Team or Fleet.</p>
+is how many handsets you can pair. The two add-ons are extras on top, and both
+can be bought on any paid tier.</p>
 
 <p>Play has no upgrade path for a one-time purchase, so moving from Solo to Team
 later means paying for Team rather than the difference. Worth knowing before you
-choose.</p>
+choose — and it is why the handset packs below add to what you have rather than
+replacing it.</p>
 """
                 + tier_table()
                 + """
 <p>The handset app is <strong>free</strong>. You pay once, for Studio, on the
-single phone that authors the catalogue.</p>
+single phone that authors the catalogue. Every handset you pair runs the free
+app; the tier is what says how many you may pair.</p>
+""",
+            },
+            {
+                "id": "packs",
+                "heading": "More handsets than ten",
+                "body": """
+<p>Company pairs ten. Past that you buy <strong>handset packs</strong>, and they
+<strong>add up</strong>: a ten and a five is fifteen more, on top of the ten the
+tier already gives you. They come in sizes from five upwards, and the price per
+handset falls as the pack grows.</p>
+
+<p>They add rather than replace because a one-time purchase has no upgrade path.
+A bigger licence would mean paying the whole new price every time you grew; a
+pack means you only ever pay for the handsets you are adding.</p>
+
+<p><strong>You can buy the same size more than once.</strong> Buy a ten today
+and a ten is still there to buy next year. Each one is bought once and kept for
+good — it comes back with you on a new phone, or after a reset, for ever. That
+is a deliberate trade: a pack you could buy over and over would have to be the
+kind of purchase Google forgets the moment it is used, and your handsets would
+vanish with it the next time you reinstalled.</p>
 """,
             },
             {
                 "id": "addon",
-                "heading": "The catalogue server add-on",
+                "heading": "The two add-ons",
                 "body": """
-<p>The <a href="data.html#server">catalogue server</a> is bought separately and
-needs Team or Fleet, because it exists so that many handsets can pull a
-catalogue without somebody handing each one a file. At a single handset, the
-file is less work than a listening socket.</p>
+<p>The <a href="data.html#server">catalogue server</a> is a small, ready-to-run
+program you host on your own network so handsets fetch catalogue updates without
+somebody handing each one a file.</p>
 
-<p>It is a one-time purchase like everything else.</p>
+<p><strong>Service reports</strong> turn a finished job into a one-page PDF for
+the customer to keep — what was done, by whom, when, with the values recorded on
+the form.</p>
+
+<p>Both are bought separately, on any paid tier, and both are one-time purchases
+like everything else. Neither is needed to use the app; they are there when the
+way you work needs them.</p>
 """,
             },
             {
@@ -1004,17 +1036,36 @@ the catalogue survives contact with a busy Friday</td></tr>
                 "id": "trying",
                 "heading": "Can I try it before paying?",
                 "body": """
-<p>Yes. The free tier is a complete Studio on one device — author a catalogue,
-import your spreadsheet, design job forms, record jobs and preview a label
-sheet. Four things are paid, and they are the ones that take your work off the
-handset: <strong>pairing</strong> other handsets, <strong>writing a recovery
-file</strong>, <strong>sealing</strong> an export, and <strong>saving a label
-sheet as a PDF</strong>. Checking and restoring a recovery file are free on
-every tier, always — the moment you need a backup is the moment you have
-least.</p>
+<p>Yes, two ways, and you need not choose between them.</p>
 
-<p>So you can find out whether the app suits your business before spending
-anything, and the thing you pay for is putting it in other people's hands.</p>
+<p><strong>A fortnight of everything.</strong> A new Studio starts a
+<strong>14-day trial</strong> on its own, with no card and nothing to cancel.
+When it ends nothing is taken away and nothing locks — you simply arrive on the
+free tier, with every job, part and photograph you recorded during it.</p>
+
+<p><strong>Then a free tier that does not expire.</strong> Free Studio keeps
+<strong>unlimited parts</strong>, spreadsheet import, search, floor plans, job
+forms, and <strong>every job it has ever recorded</strong>. What it does not do
+is the work of a business with people in the field:</p>
+
+<div class="scroll"><table>
+<thead><tr><th scope="col">Free Studio</th><th scope="col">Paid</th></tr></thead>
+<tbody>
+<tr><th scope="row">Handsets you can pair</th><td>None — Studio alone</td></tr>
+<tr><th scope="row">Catalogues held at once</th><td>One (you can correct and
+replace it as often as you like)</td></tr>
+<tr><th scope="row">Places finished work is sent</th><td>One</td></tr>
+<tr><th scope="row">Jobs you can complete</th><td>Twenty. Recording, editing,
+reading and backing up jobs are never limited</td></tr>
+<tr><th scope="row">Label sheets</th><td>Saved with a small mark on the
+page</td></tr>
+<tr><th scope="row">Recovery file</th><td>Checking and restoring one are free on
+every tier, always — the moment you need a backup is the moment you have
+least</td></tr>
+</tbody></table></div>
+
+<p>So you can run a real evaluation on real data, keep what you made, and pay
+when the app starts doing the thing you would be paying it for.</p>
 """,
             },
             {
