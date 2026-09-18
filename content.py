@@ -70,9 +70,30 @@ TIERS = [
     ("Solo", "1", "£20"),
     ("Team", "5", "£70"),
     ("Company", "10", "£150"),
-    ("Handset packs", "Add-ons — more handsets on Company, and they add up", "from £70"),
+    ("Handset packs", "Add-ons — more handsets on Company, and they add up", "from £15"),
     ("Catalogue server", "Add-on — any paid tier", "£120"),
     ("Service reports", "Add-on — any paid tier", "£20"),
+]
+
+# Handset packs, smallest first. The app carries no list of these: it builds
+# candidate product ids from a naming rule and asks Google Play which exist, so
+# this table describes what has been created rather than what the app believes.
+# Prices are the one-time base price, before VAT.
+#
+# The per-handset column is computed rather than typed, so it cannot drift from
+# the price beside it - which is exactly how this page came to claim the
+# cheapest pack was £70 when the smallest is a single handset at £15.
+PACKS = [
+    (1, 15),
+    (2, 28),
+    (3, 40),
+    (5, 65),
+    (10, 120),
+    (15, 170),
+    (20, 220),
+    (25, 265),
+    (30, 310),
+    (40, 400),
 ]
 
 SAMPLES = [
@@ -93,6 +114,22 @@ def field_type_table():
     return (
         "<div class='scroll'><table class='ref'>"
         "<thead><tr><th scope='col'>Type</th><th scope='col'>What it holds</th></tr></thead>"
+        f"<tbody>{rows}</tbody></table></div>"
+    )
+
+
+def pack_table():
+    rows = "\n".join(
+        f"<tr><th scope='row'>+{size}</th>"
+        f"<td class='num'>£{price}</td>"
+        f"<td class='num'>£{price / size:.2f}</td></tr>"
+        for size, price in PACKS
+    )
+    return (
+        "<div class='scroll'><table class='price'>"
+        "<thead><tr><th scope='col'>Pack</th>"
+        "<th scope='col'>One-time</th>"
+        "<th scope='col'>Per handset</th></tr></thead>"
         f"<tbody>{rows}</tbody></table></div>"
     )
 
@@ -958,6 +995,8 @@ replacing it.</p>
 """
                 + tier_table()
                 + """
+<p class="note">One-time prices, before VAT. Google Play shows the final price
+including VAT before you buy, and converts it for your country.</p>
 <p>The handset app is <strong>free</strong>. You pay once, for Studio, on the
 single phone that authors the catalogue. Every handset you pair runs the free
 app; the tier is what says how many you may pair.</p>
@@ -969,8 +1008,22 @@ app; the tier is what says how many you may pair.</p>
                 "body": """
 <p>Company pairs ten. Past that you buy <strong>handset packs</strong>, and they
 <strong>add up</strong>: a ten and a five is fifteen more, on top of the ten the
-tier already gives you. They come in sizes from five upwards, and the price per
-handset falls as the pack grows.</p>
+tier already gives you.</p>
+
+<p>They start at <strong>one handset</strong>, so you never buy capacity you do
+not need. Taking on a single apprentice costs one handset, not a jump to the
+next size up.</p>
+"""
+                + pack_table()
+                + """
+<p class="note">One-time prices, before VAT. Google Play shows the final price
+including VAT before you buy, and converts it for your country.</p>
+
+<p><strong>The bigger the pack, the less each handset in it costs</strong> — from
+£15 for a single down to £10 each in the largest. The curve never inverts: a
+bigger pack is always the better buy per handset, so two smaller ones never beat
+the right one. If you want fifty more, a +40 and a +10 is £520, and it is the
+cheapest route there.</p>
 
 <p>They add rather than replace because a one-time purchase has no upgrade path.
 A bigger licence would mean paying the whole new price every time you grew; a
@@ -982,6 +1035,10 @@ good — it comes back with you on a new phone, or after a reset, for ever. That
 is a deliberate trade: a pack you could buy over and over would have to be the
 kind of purchase Google forgets the moment it is used, and your handsets would
 vanish with it the next time you reinstalled.</p>
+
+<p><strong>Packs are offered on Company only.</strong> Below the top tier a pack
+costs about what the next tier costs and grants the same handsets, so buying one
+there would be the worse deal of the two — the app offers the tier instead.</p>
 """,
             },
             {
