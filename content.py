@@ -310,6 +310,233 @@ for you.</p></div>
             },
         ],
     },
+    # --------------------------------------------------------------- features
+    {
+        "slug": "features",
+        "title": "Everything it does",
+        "blurb": "The whole list, in one place — what the free app does on site, and what Studio does in the office.",
+        "sections": [
+            {
+                "id": "how-to-read",
+                "heading": "How to read this",
+                "body": """
+<p>This page is the complete list. Every line is something the apps do
+<strong>today</strong> — nothing here is planned, in progress, or a thing we
+mean to get to. Where a line needs explaining, it links to the page that
+explains it.</p>
+
+<p>Two apps. <strong>Manifest</strong> is free, goes on every engineer's phone,
+and there is no limit on how many people run it. <strong>Manifest Studio</strong>
+is the one you pay for, once, on the phone or tablet that builds the catalogue.
+See <a href="start.html#two-apps">the two apps</a>.</p>
+
+<p class="note">Everything below works with no signal. The only lines that need
+a connection are the ones that send something somewhere, and they wait until
+there is one.</p>
+""",
+            },
+            {
+                "id": "field-finding",
+                "heading": "Manifest — finding a part",
+                "body": """
+<ul>
+<li>Search every field your catalogue defines, not just a part number</li>
+<li>Search by voice</li>
+<li><a href="working.html#scan">Scan a QR code or barcode</a> to jump straight to the part</li>
+<li><strong>Check a code</strong> — scan to confirm you picked the right one</li>
+<li><a href="working.html#browse">Browse by any axis you choose</a>: maker, size, rating, material, what it fits, where it lives</li>
+<li>Filters and sorting that stay put as you move around</li>
+<li>Every part's own QR code, on screen, to show or to scan from another phone</li>
+</ul>
+""",
+            },
+            {
+                "id": "field-part",
+                "heading": "Manifest — the part page",
+                "body": """
+<ul>
+<li>Every field you defined, in your words and your order</li>
+<li>Where it is kept — rack, shelf, drawer, van — and <a href="working.html#plans">a pin on the floor plan</a></li>
+<li>Photographs, datasheets and documents</li>
+<li>What goes into it, and what it is used in</li>
+<li><a href="working.html#myparts">Private notes and favourites</a>, which never leave that handset</li>
+<li>Tap a tag to see everything that shares it</li>
+<li>Share a part with somebody</li>
+</ul>
+""",
+            },
+            {
+                "id": "field-plans",
+                "heading": "Manifest — floor plans and assemblies",
+                "body": """
+<ul>
+<li>Open site drawings and floor plans</li>
+<li>Zones and bays, colour-coded, with a count on each</li>
+<li>See the exact bay or shelf a part sits in</li>
+<li><a href="working.html#builds">Kits and assemblies</a> with quantities, nested as deep as you need</li>
+<li><strong>What to collect</strong> — a pick list for a whole assembly</li>
+</ul>
+""",
+            },
+            {
+                "id": "field-jobs",
+                "heading": "Manifest — jobs on site",
+                "body": """
+<ul>
+<li>Job sheets your office designed, filled in on site</li>
+<li>Text, numbers, dates, durations, choices, tags, addresses, phone numbers</li>
+<li>Photographs and signatures taken on the glass</li>
+<li>A running timer</li>
+<li>Parts picked from the catalogue — tap one to open it</li>
+<li>A status the job moves through, in <strong>your</strong> words — and if you
+say which moves are allowed, the app permits those and no others</li>
+<li><a href="jobs.html#templates">Templates</a> for the jobs you do over and over</li>
+<li>Job history, and a seven-day bin for anything deleted</li>
+<li><a href="jobs.html#sending">Finished jobs sent to your own systems</a> when signal returns</li>
+<li><a href="jobs.html#inbound">Jobs fetched in</a> from your systems, if you configure it</li>
+<li><a href="jobs.html#byfile">Jobs moved by file</a> between handsets</li>
+</ul>
+""",
+            },
+            {
+                "id": "field-labels",
+                "heading": "Manifest — labels",
+                "body": """
+<ul>
+<li>Preview and save <a href="labels.html#printing">label sheets</a> for shelves and bins</li>
+<li>Sized to <a href="labels.html#stocks">stock you already buy</a> — Avery, Brother, Dymo, Zebra, plain paper, continuous roll and tape</li>
+</ul>
+""",
+            },
+            {
+                "id": "studio-catalogue",
+                "heading": "Studio — building the catalogue",
+                "body": """
+<ul>
+<li><a href="catalogue.html#fields">You decide what a part is</a> — write the fields and the app takes its shape from them</li>
+<li>Choices from a list, flat or <strong>nested</strong> so one sits under another</li>
+<li>Mark any field searchable, filterable, or an axis people browse by</li>
+<li><a href="catalogue.html#words">Your own words</a> — <em>Jobs</em> can be <em>Tasks</em>, <em>Plans</em> can be <em>Sites</em></li>
+<li><a href="catalogue.html#look">Your logo and colours</a></li>
+<li>Sections and categories of your own</li>
+<li><a href="start.html#samples">Six worked examples</a> to start from and cut down</li>
+<li>Retype a field later without losing what is already in it</li>
+<li>A seven-day bin for deleted parts</li>
+</ul>
+<p>The full list of field types is in the <a href="reference.html#types">reference</a>.</p>
+""",
+            },
+            {
+                "id": "studio-import",
+                "heading": "Studio — getting your parts in",
+                "body": """
+<ul>
+<li><a href="data.html#spreadsheet">CSV and Excel import</a> with a column-mapping step</li>
+<li>The app proposes a type for each column from what it sees in the data; you can override any of them</li>
+<li>Merge a second spreadsheet into an existing catalogue without doubling it</li>
+<li>Bulk edit and bulk tag across the whole catalogue</li>
+<li>Add parts by hand, one at a time</li>
+</ul>
+""",
+            },
+            {
+                "id": "studio-plans",
+                "heading": "Studio — floor plans",
+                "body": """
+<ul>
+<li>Draw your aisles, bays and zones and give them colours</li>
+<li>Put a part on the drawing and <strong>drag its pin</strong> to where it actually is</li>
+<li>As many plans as you have buildings</li>
+</ul>
+""",
+            },
+            {
+                "id": "studio-jobs",
+                "heading": "Studio — designing the job sheet",
+                "body": """
+<ul>
+<li><a href="jobs.html#forms">Design the form</a>: which fields, in what order, which are required</li>
+<li>Define the states a job may move between</li>
+<li><a href="jobs.html#templates">Templates</a> for your common jobs</li>
+<li><a href="jobs.html#sending">Where finished jobs go</a> — HTTPS, email or a folder — with your own field mapping</li>
+<li><a href="jobs.html#inbound">Where jobs come from</a>, if you send work out to handsets</li>
+<li><a href="jobs.html#retention">Retention and anonymising</a> rules</li>
+<li>A picking order, so a pick list comes out in the order somebody walks the racking</li>
+</ul>
+""",
+            },
+            {
+                "id": "studio-sending",
+                "heading": "Studio — getting it onto handsets",
+                "body": """
+<ul>
+<li><a href="safety.html#pairing">Pair a handset</a> by scanning a code</li>
+<li><strong>Sealed catalogues</strong> — encrypted, and they open only on handsets you paired</li>
+<li>A catalogue altered on its way is refused</li>
+<li>Update a catalogue the handsets already hold — it <strong>updates in place</strong>, it does not add a second copy</li>
+<li><a href="data.html#server">A catalogue server</a> you host, so handsets fetch updates themselves</li>
+<li>Plain export for your own records</li>
+<li><a href="safety.html#removing">Re-key the fleet</a> if a handset goes missing</li>
+<li><a href="safety.html#transfer">Copy job settings</a> to another device</li>
+</ul>
+""",
+            },
+            {
+                "id": "studio-safety",
+                "heading": "Studio — not losing any of it",
+                "body": """
+<ul>
+<li><a href="safety.html#recovery">A recovery file</a> — a lost handset is not a lost catalogue</li>
+<li>Scheduled automatic backups</li>
+<li>Reminders when the fleet changes and the backup no longer knows about it</li>
+</ul>
+""",
+            },
+            {
+                "id": "everywhere",
+                "heading": "Both apps, everywhere",
+                "body": """
+<ul>
+<li>Works with <strong>no signal at all</strong></li>
+<li>Encrypted on the handset, with the key in Android's hardware keystore</li>
+<li>An optional requirement that the handset has a screen lock</li>
+<li>Dark mode, large text, and TalkBack throughout</li>
+<li><a href="safety.html#privacy">No account, no sign-in, and no server of ours</a> — nothing you do reaches us</li>
+</ul>
+""",
+            },
+            {
+                "id": "extras",
+                "heading": "The two add-ons",
+                "body": """
+<p>Both are one-time purchases and both work on <a href="pricing.html#addon">any
+paid tier</a>, including the cheapest.</p>
+
+<ul>
+<li><strong>Catalogue server</strong> — a small program you run on your own
+network so handsets fetch catalogue updates without anybody handing each one a
+file</li>
+<li><strong>Service reports</strong> — a finished job as a one-page PDF to leave
+with the customer</li>
+</ul>
+""",
+            },
+            {
+                "id": "honest",
+                "heading": "And what it does not do",
+                "body": """
+<p>A list this long is worth less if it does not say where it stops. Reading
+and writing NFC tags, exporting to CSV, printing straight to a printer rather
+than saving a file, and sending a catalogue phone-to-phone are all things this
+app does <strong>not</strong> do today.</p>
+
+<p><a href="pricing.html#not">What it deliberately is not</a> covers the larger
+scope decisions — there is no CRM, no stock ledger and no accounts behind
+this.</p>
+""",
+            },
+        ],
+    },
     # -------------------------------------------------------------- catalogue
     {
         "slug": "catalogue",
